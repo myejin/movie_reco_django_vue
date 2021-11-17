@@ -25,7 +25,7 @@ schema_view = get_schema_view(
         default_version="v1",
         description="Test description",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
+        contact=openapi.Contact(email="rlagpwlsq78@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
@@ -34,6 +34,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("movies/", include("movies.urls")),
     path("accounts/", include("accounts.urls")),
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     # path("swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"),
