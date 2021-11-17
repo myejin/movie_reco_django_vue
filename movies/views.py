@@ -9,7 +9,7 @@ from .serializers import GenreSerializer, ActorSerializer, MovieListSerializer, 
 API_KEY = config("TMDB_API")
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def initiate_database(request):
     if not request.user.is_staff:
         return Response(
