@@ -1,60 +1,24 @@
 import requests
 from decouple import config
-from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Genre, Actor, Movie
-from .serializers.swagger import (
-    GenreRequestSerializer,
-    MovieOfGenreResponseSerializer,
-)
-from .serializers.general import (
+from ..models import Genre, Actor, Movie
+from ..serializers.general import (
     GenreSerializer,
     ActorSerializer,
-    MovieListSerializer,
     MovieSerializer,
 )
-from drf_yasg.utils import swagger_auto_schema
-
-API_KEY = config("TMDB_API")
-
-
-@swagger_auto_schema(
-    method="get",
-    operation_description="모든 영화장르 정보를 반환합니다.",
-    responses={200: GenreRequestSerializer},
-)
-@api_view(["GET"])
-def genre_list(request):
-    genres = get_list_or_404(Genre)
-    serializer = GenreSerializer(genres, many=True)
-    return Response({"genres": serializer.data}, status.HTTP_200_OK)
-
-
-@swagger_auto_schema(
-    method="get",
-    operation_description="특정 장르의 모든 영화를 반환합니다.",
-    responses={200: MovieOfGenreResponseSerializer},
-)
-@api_view(["GET"])
-def movie_of_genre(request, genre_pk):
-    genre = get_object_or_404(Genre, pk=genre_pk)
-    movies = genre.movies.all()
-    serializer = MovieListSerializer(movies, many=True)
-    data = {
-        "genre_name": genre.name,
-        "movies": serializer.data,
-    }
-    return Response(data, status.HTTP_200_OK)
 
 
 @api_view(["POST"])
 def initiate_database(request):
-    if not request.user.is_staff:
-        return Response(
-            {"error": f"{str(request.user)} 님은 접근 권한이 없습니다."}, status.HTTP_400_BAD_REQUEST
-        )
+    API_KEY = config("TMDB_API")
+
+    # if not request.user.is_staff:
+    #     return Response(
+    #         {"error": f"{str(request.user)} 님은 접근 권한이 없습니다."}, status.HTTP_400_BAD_REQUEST
+    #     )
 
     def init_genre():
         url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}&language=ko-KR"
@@ -70,11 +34,12 @@ def initiate_database(request):
                 serializer.save()
 
     def init_movie():
-        for i in range(1, 11):
+        for i in range(1, 5):
             url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={API_KEY}&language=ko-KR&region=KR&page={i}"
             resp = requests.get(url).json()
             movies = resp["results"]
             for movie in movies:
+                # print("movie", movie)
                 new_movie = {}
                 new_movie["tid"] = movie["id"]
                 new_movie["title"] = movie["title"]
@@ -96,6 +61,7 @@ def initiate_database(request):
             casts = resp["cast"]
             for cast in casts:
                 if cast["known_for_department"] == "Acting":
+                    # print("hi acting!!!!!!!")
                     if cast["popularity"] <= 6:
                         continue
                     actor = {
@@ -110,6 +76,7 @@ def initiate_database(request):
                         actor.movies.add(movie.pk)
 
                 elif cast["known_for_department"] == "Directing":
+                    # print("hi Directing!!!!!!!")
                     movie.director = cast["name"]
                     movie.save()
 
