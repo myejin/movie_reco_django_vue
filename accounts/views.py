@@ -8,8 +8,9 @@ from drf_yasg import openapi
 
 @swagger_auto_schema(
     method="post",
+    operation_description="새로운 유저를 생성합니다. (회원가입)",
     request_body=UserRequestSerializer,
-    responses={200: openapi.Response("회원가입된 username을 반환합니다.", UserSerializer)},
+    responses={201: openapi.Response("회원가입 완료 후 username을 반환합니다.", UserSerializer)},
 )
 @api_view(["POST"])
 def signup(request):

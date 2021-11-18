@@ -23,7 +23,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Movie Reco API",
         default_version="v1",
-        description="Test description",
+        description="영화 추천 서비스",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="rlagpwlsq78@gmail.com"),
         license=openapi.License(name="BSD License"),

@@ -5,7 +5,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Genre, Actor, Movie
-from .serializers.swagger import GenreRequestSerializer, MovieOfGenreRequestSerializer
+from .serializers.swagger import (
+    GenreRequestSerializer,
+    MovieOfGenreResponseSerializer,
+)
 from .serializers.general import (
     GenreSerializer,
     ActorSerializer,
@@ -13,14 +16,14 @@ from .serializers.general import (
     MovieSerializer,
 )
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
 API_KEY = config("TMDB_API")
 
 
 @swagger_auto_schema(
     method="get",
-    responses={200: openapi.Response("모든 장르의 정보를 반환합니다.", GenreRequestSerializer)},
+    operation_description="모든 영화장르 정보를 반환합니다.",
+    responses={200: GenreRequestSerializer},
 )
 @api_view(["GET"])
 def genre_list(request):
@@ -31,7 +34,8 @@ def genre_list(request):
 
 @swagger_auto_schema(
     method="get",
-    responses={200: openapi.Response("특정 장르의 모든 영화 정보를 반환합니다.", MovieOfGenreRequestSerializer)},
+    operation_description="특정 장르의 모든 영화를 반환합니다.",
+    responses={200: MovieOfGenreResponseSerializer},
 )
 @api_view(["GET"])
 def movie_of_genre(request, genre_pk):

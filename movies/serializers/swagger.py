@@ -11,7 +11,7 @@ class GenreRequestSerializer(serializers.Serializer):
     genres = serializers.ListField(child=GenreSerializer())
 
 
-class MovieOfGenreRequestSerializer(serializers.Serializer):
+class MovieOfGenreResponseSerializer(serializers.Serializer):
     class MovieListSerializer(serializers.ModelSerializer):
         class Meta:
             model = Movie
