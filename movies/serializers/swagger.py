@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from django.core.validators import MinValueValidator, MaxValueValidator
+from rest_framework import serializers, validators
 from ..models import Genre, Movie
 
 
@@ -23,3 +24,13 @@ class MovieOfGenreResponseSerializer(serializers.Serializer):
 
     genre_name = serializers.CharField()
     movies = serializers.ListField(child=MovieListSerializer())
+
+
+class MessageSerializer(serializers.Serializer):
+    message = serializers.CharField()
+
+
+class RankBodySerializer(serializers.Serializer):
+    rank = serializers.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)], help_text="0-5 사이 정수 입력"
+    )
