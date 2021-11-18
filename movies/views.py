@@ -1,12 +1,36 @@
 import requests
 from decouple import config
+from django.shortcuts import get_list_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Genre, Actor, Movie
-from .serializers import GenreSerializer, ActorSerializer, MovieListSerializer, MovieSerializer
+from .serializers.swagger import GenreRequestSerializer
+from .serializers.general import (
+    GenreSerializer,
+    ActorSerializer,
+    # MovieListSerializer,
+    MovieSerializer,
+)
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 API_KEY = config("TMDB_API")
+
+
+@swagger_auto_schema(
+    method="get",
+    responses={200: openapi.Response("모든 장르의 정보를 반환합니다.", GenreRequestSerializer)},
+)
+@api_view(["GET"])
+def genre_list(request):
+    genres = get_list_or_404(Genre)
+    serializer = GenreSerializer(genres, many=True)
+    return Response({"genres": serializer.data}, status.HTTP_200_OK)
+
+
+def movie_of_genre(request, genre_pk):
+    pass
 
 
 @api_view(["POST"])
