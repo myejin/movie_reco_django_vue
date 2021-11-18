@@ -21,7 +21,11 @@ def initiate_database(request):
         resp = requests.get(url).json()
         genres = resp["genres"]
         for genre in genres:
-            serializer = GenreSerializer(data=genre)
+            data = {
+                "tid": genre["id"],
+                "name": genre["name"],
+            }
+            serializer = GenreSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
 
@@ -37,11 +41,12 @@ def initiate_database(request):
                 new_movie["overview"] = movie["overview"]
                 new_movie["release_date"] = movie["release_date"]
                 new_movie["poster_path"] = movie["backdrop_path"]
-                new_movie["genres"] = movie["genre_ids"]
 
                 serializer = MovieSerializer(data=new_movie)
                 if serializer.is_valid(raise_exception=True):
-                    serializer.save()
+                    new_movie = serializer.save()
+                    genres = Genre.objects.filter(tid__in=movie["genre_ids"])
+                    new_movie.genres.set(genres)
 
     def init_actor_director():
         movies = Movie.objects.all()
