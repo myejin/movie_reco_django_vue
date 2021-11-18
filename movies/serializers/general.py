@@ -1,6 +1,5 @@
-from django.db.models import fields
 from rest_framework import serializers
-from .models import Genre, Actor, Movie
+from ..models import Genre, Actor, Movie
 
 
 class GenreSerializer(serializers.ModelSerializer):
