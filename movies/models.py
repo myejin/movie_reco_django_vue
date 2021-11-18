@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Genre(models.Model):
+    tid = models.IntegerField()
     name = models.CharField(max_length=20)
 
     def __str__(self):
