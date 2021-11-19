@@ -29,8 +29,8 @@ genre_list_schema = {
         examples={
             "application/json": {
                 "id": 1,
-                "tid": 80,
-                "name": "모험",
+                "tid": 28,
+                "name": "액션",
             }
         },
     )
@@ -41,11 +41,11 @@ movie_of_genre_schema = {
         description="",
         examples={
             "application/json": {
-                "genre_name": "모험",
+                "genre_name": "액션",
                 "movies": [
                     {
-                        "id": 1,
-                        "title": "쇼생크 탈출",
+                        "id": 11,
+                        "title": "다크 나이트",
                         "poster_path": "poster.jpg",
                     },
                 ],
@@ -54,7 +54,7 @@ movie_of_genre_schema = {
     )
 }
 init_schema = {
-    "200": openapi.Response(
+    "201": openapi.Response(
         description="",
         examples={
             "application/json": {

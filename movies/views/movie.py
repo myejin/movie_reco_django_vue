@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ..models import Movie, MovieRank
-from ..serializers.swagger import (
+from ..serializers import (
     RankBodySerializer,
 )
 
@@ -43,8 +43,9 @@ def rate(request, movie_pk):
     if request.user.is_authenticated:
         movie = get_object_or_404(Movie, pk=movie_pk)
         if movie.rate_users.filter(pk=request.user.pk).exists():
-            movie_user = movie.rate_users.filter(pk=request.user.pk)
-            movie_user.rank = request.data["rank"]
+            movie_rank = get_object_or_404(MovieRank, user=request.user, movie=movie)
+            movie_rank.rank = request.data["rank"]
+            movie_rank.save()
             msg = "평점을 변경했습니다."
         else:
             MovieRank.objects.create(user=request.user, movie=movie, rank=request.data["rank"])

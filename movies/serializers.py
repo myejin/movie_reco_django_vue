@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework import serializers
 from ..models import Genre, Actor, Movie, MovieRank
 
@@ -102,7 +103,12 @@ class MovieRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieRank
         fields = (
-            "id",
             "movie",
             "rank",
         )
+
+
+class RankBodySerializer(serializers.Serializer):
+    rank = serializers.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)], help_text="0-5 사이 정수 입력"
+    )

@@ -9,7 +9,7 @@ token_param = openapi.Parameter(
 )
 
 signup_res_schema = {
-    "200": openapi.Response(
+    "201": openapi.Response(
         description="회원가입 완료 후 username을 반환합니다.",
         examples={
             "application/json": {
@@ -31,7 +31,7 @@ follow_res_schema = {
 }
 similar_res_schema = {
     "200": openapi.Response(
-        description="",
+        description="영화(rate_movies)는 평점이 높은 순으로 반환됩니다.",
         examples={
             "application/json": {
                 "count": 1,

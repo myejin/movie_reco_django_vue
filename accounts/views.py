@@ -1,3 +1,4 @@
+import math
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
@@ -63,7 +64,7 @@ def follow(request, username):
 @api_view(["GET"])
 def similar(request):
     my_like_movies = MovieRank.objects.filter(user=request.user, rank__gte=4).values("movie")
-    count = round(my_like_movies.count() / 2)
+    count = math.ceil(my_like_movies.count() / 2)
     users = get_list_or_404(get_user_model())
     similar_users = []
     for user in users:

@@ -23,10 +23,10 @@ class Actor(models.Model):
 class Movie(models.Model):
     tid = models.IntegerField()
     title = models.CharField(max_length=50)
-    overview = models.TextField(default=False)
+    overview = models.TextField(default="")
     release_date = models.DateTimeField(auto_now_add=True)
-    poster_path = models.TextField(default=False)
-    director = models.CharField(max_length=50, default=False)
+    poster_path = models.TextField(default="")
+    director = models.CharField(max_length=50, default="")
     rate_user_count = models.IntegerField(default=0)
     total_rank = models.IntegerField(default=0)
 
@@ -41,15 +41,7 @@ class Movie(models.Model):
         return f"{self.pk}: {self.title}"
 
 
-class Rankset(models.IntegerChoices):
-    ONE = 1, "1"
-    TWO = 2, "3"
-    THREE = 3, "3"
-    FOUR = 4, "4"
-    FIVE = 5, "5"
-
-
 class MovieRank(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    rank = models.IntegerField(default=Rankset.FIVE, choices=Rankset.choices)
+    rank = models.IntegerField(default=5, choices=list(zip(range(1, 6), range(1, 6))))
