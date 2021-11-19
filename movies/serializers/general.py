@@ -1,12 +1,16 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from ..models import Genre, Actor, Movie
+from ..models import Genre, Actor, Movie, MovieRank
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = "__all__"
+        fields = (
+            "id",
+            "tid",
+            "name",
+        )
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -55,7 +59,10 @@ class MovieSerializer(serializers.ModelSerializer):
     class UserSerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
-            fields = ("username",)
+            fields = (
+                "id",
+                "username",
+            )
 
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
@@ -77,4 +84,25 @@ class MovieSerializer(serializers.ModelSerializer):
             "actors",
             "wish_users",
             "rate_users",
+        )
+
+
+class MovieRankSerializer(serializers.ModelSerializer):
+    class MovieListSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Movie
+            fields = (
+                "id",
+                "title",
+                "poster_path",
+            )
+
+    movie = MovieListSerializer(read_only=True)
+
+    class Meta:
+        model = MovieRank
+        fields = (
+            "id",
+            "movie",
+            "rank",
         )

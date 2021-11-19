@@ -5,6 +5,7 @@ from django.conf import settings
 class Genre(models.Model):
     tid = models.IntegerField()
     name = models.CharField(max_length=20)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_genres")
 
     def __str__(self):
         return f"{self.pk}: {self.name}"

@@ -12,17 +12,3 @@ class UserRequestSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
     password2 = serializers.CharField()
-
-
-class SimilarResponseSerializer(serializers.Serializer):
-    class UserListSerializer(serializers.Serializer):
-        class MovieSerializer(serializers.Serializer):
-            movie_id = serializers.IntegerField()
-            rank = serializers.IntegerField()
-
-        user_id = serializers.IntegerField()
-        username = serializers.CharField()
-        rate_movies = serializers.ListField(child=MovieSerializer())
-
-    count = serializers.IntegerField()
-    users = serializers.ListField(child=UserListSerializer())
