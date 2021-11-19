@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework import serializers
-from ..models import Genre, Actor, Movie, MovieRank
+from .models import Genre, Actor, Movie, MovieRank
 
 
 class GenreSerializer(serializers.ModelSerializer):

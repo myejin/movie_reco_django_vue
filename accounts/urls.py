@@ -8,6 +8,7 @@ from . import views
 # accounts/
 
 urlpatterns = [
+    path("genres/", views.genres_update, name="genres_update"),
     path("similar/", views.similar, name="similar"),
     path("signup/", views.signup, name="signup"),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
