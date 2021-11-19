@@ -12,3 +12,7 @@ class UserRequestSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
     password2 = serializers.CharField()
+
+
+class GenreUpdateSerializer(serializers.Serializer):
+    genres = serializers.ListField(child=serializers.IntegerField())

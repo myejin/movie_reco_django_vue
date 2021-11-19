@@ -77,3 +77,15 @@ profile_res_schema = {
         },
     )
 }
+genres_update_res_schema = {
+    "200": openapi.Response(
+        description="",
+        examples={
+            "application/json": {
+                "id": 1,
+                "username": "user1",
+                "genres": [1, 3],
+            }
+        },
+    )
+}
