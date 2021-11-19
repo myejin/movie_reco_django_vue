@@ -21,10 +21,11 @@ signup_res_schema = {
 
 follow_res_schema = {
     "200": openapi.Response(
-        description="",
+        description="해당 유저의 팔로워/팔로잉 수를 반환합니다.",
         examples={
             "application/json": {
-                "message": "user1 님을 팔로우했습니다.",
+                "follower_count": 100000,
+                "following_count": 1,
             }
         },
     )
@@ -82,9 +83,7 @@ genres_update_res_schema = {
         description="",
         examples={
             "application/json": {
-                "id": 1,
-                "username": "user1",
-                "genres": [1, 3],
+                "message": "선호하는 장르 리스트를 수정했습니다.",
             }
         },
     )

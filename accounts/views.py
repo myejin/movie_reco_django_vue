@@ -47,8 +47,11 @@ def follow(request, username):
             else:
                 you.followers.add(request.user)
                 msg = f"{username} 님을 팔로우했습니다."
-
-        return Response({"message": msg}, status.HTTP_200_OK)
+        data = {
+            "follower_count": you.followers.count(),
+            "following_count": you.followings.count(),
+        }
+        return Response(data, status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
