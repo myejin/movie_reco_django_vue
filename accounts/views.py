@@ -5,12 +5,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
-from .serializers import (
-    UserSimpleSerializer,
-    UserRequestSerializer,
-)
-from movies.models import MovieRank
-from movies.serializers.general import MovieListSerializer, MovieRankSerializer, GenreSerializer
+from .serializers import UserSimpleSerializer, UserRequestSerializer, GenreUpdateSerializer
+from movies.models import MovieRank, Genre
+from movies.serializers import MovieListSerializer, MovieRankSerializer, GenreSerializer
 from .schemas import *
 
 
@@ -107,4 +104,31 @@ def profile(request, username):
             "like_genres": GenreSerializer(user.like_genres.all(), many=True).data,
         }
         return Response(data, status.HTTP_200_OK)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@swagger_auto_schema(
+    method="put",
+    operation_description="선호하는 장르 리스트를 업데이트 합니다.",
+    manual_parameters=[token_param],
+    request_body=GenreUpdateSerializer,
+    responses=genres_update_res_schema,
+)
+@api_view(["PUT"])
+def genres_update(request):
+    if request.user.is_authenticated:
+        user = get_object_or_404(get_user_model(), pk=request.user.pk)
+        new_genre_ids = request.data["genres"]
+        old_genre_ids = user.like_genres.all().values("id")
+
+        for genre in old_genre_ids:
+            if genre["id"] not in new_genre_ids:
+                user.like_genres.remove(genre["id"])
+        for genre_id in new_genre_ids:
+            if not user.like_genres.filter(pk=genre_id).exists():
+                genre = get_object_or_404(Genre, id=genre_id)
+                user.like_genres.add(genre)
+
+        serializer = GenreSerializer(user.like_genres.all(), many=True)
+        return Response({"genres": serializer.data}, status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
