@@ -65,3 +65,11 @@ init_schema = {
         },
     )
 }
+rate_schema = {
+    "201": openapi.Response(
+        description="평점 개수와 총합으로 평균 평점을 구할 수 있습니다.",
+        examples={
+            "application/json": {"rank_count": 3, "rank_sum": 10},
+        },
+    )
+}

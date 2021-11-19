@@ -27,8 +27,8 @@ class Movie(models.Model):
     release_date = models.DateTimeField(auto_now_add=True)
     poster_path = models.TextField(default="")
     director = models.CharField(max_length=50, default="")
-    rate_user_count = models.IntegerField(default=0)
-    total_rank = models.IntegerField(default=0)
+    rank_count = models.IntegerField(default=0)
+    rank_sum = models.IntegerField(default=0)
 
     genres = models.ManyToManyField(Genre, related_name="movies")
     actors = models.ManyToManyField(Actor, related_name="movies")

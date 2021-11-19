@@ -8,7 +8,7 @@ from ..serializers import (
 )
 
 from drf_yasg.utils import swagger_auto_schema
-from ..schemas import token_param, msg_res_schema
+from ..schemas import token_param, msg_res_schema, rate_schema
 
 
 @swagger_auto_schema(
@@ -36,7 +36,7 @@ def wish(request, movie_pk):
     operation_description="해당 영화의 평점(1-5 사이 정수)를 추가/수정합니다.",
     manual_parameters=[token_param],
     request_body=RankBodySerializer,
-    responses=msg_res_schema("평점을 등록했습니다."),
+    responses=rate_schema,
 )
 @api_view(["POST"])
 def rate(request, movie_pk):
@@ -44,11 +44,18 @@ def rate(request, movie_pk):
         movie = get_object_or_404(Movie, pk=movie_pk)
         if movie.rate_users.filter(pk=request.user.pk).exists():
             movie_rank = get_object_or_404(MovieRank, user=request.user, movie=movie)
-            movie_rank.rank = request.data["rank"]
+            old_rank, movie_rank.rank = movie_rank.rank, request.data["rank"]
             movie_rank.save()
-            msg = "평점을 변경했습니다."
+            movie.rank_sum += movie_rank.rank - old_rank
+            movie.save()
         else:
             MovieRank.objects.create(user=request.user, movie=movie, rank=request.data["rank"])
-            msg = "평점을 등록했습니다."
-        return Response({"message": msg}, status.HTTP_200_OK)
+            movie.rank_count += 1
+            movie.rank_sum += request.data["rank"]
+            movie.save()
+        data = {
+            "rank_count": movie.rank_count,
+            "rank_sum": movie.rank_sum,
+        }
+        return Response(data, status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
