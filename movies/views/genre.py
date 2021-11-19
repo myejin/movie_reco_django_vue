@@ -3,21 +3,18 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ..models import Genre
-from ..serializers.swagger import (
-    GenreRequestSerializer,
-    MovieOfGenreResponseSerializer,
-)
 from ..serializers.general import (
     GenreSerializer,
     MovieListSerializer,
 )
 from drf_yasg.utils import swagger_auto_schema
+from ..schemas import genre_list_schema, movie_of_genre_schema
 
 
 @swagger_auto_schema(
     method="get",
     operation_description="모든 영화장르 정보를 반환합니다.",
-    responses={200: GenreRequestSerializer},
+    responses=genre_list_schema,
 )
 @api_view(["GET"])
 def genre_list(request):
@@ -29,7 +26,7 @@ def genre_list(request):
 @swagger_auto_schema(
     method="get",
     operation_description="특정 장르의 모든 영화를 반환합니다.",
-    responses={200: MovieOfGenreResponseSerializer},
+    responses=movie_of_genre_schema,
 )
 @api_view(["GET"])
 def movie_of_genre(request, genre_pk):
