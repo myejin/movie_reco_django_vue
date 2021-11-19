@@ -3,22 +3,30 @@ from decouple import config
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 from ..models import Genre, Actor, Movie
 from ..serializers.general import (
     GenreSerializer,
     ActorSerializer,
     MovieSerializer,
 )
+from ..schemas import token_param, init_schema
 
 
+@swagger_auto_schema(
+    method="post",
+    operation_description="TMDB 로부터 데이터를 받아와 로컬 DB에 저장합니다.\n이 API는 관리자만 접근할 수 있습니다.",
+    manual_parameters=[token_param],
+    responses=init_schema,
+)
 @api_view(["POST"])
 def initiate_database(request):
     API_KEY = config("TMDB_API")
 
-    # if not request.user.is_staff:
-    #     return Response(
-    #         {"error": f"{str(request.user)} 님은 접근 권한이 없습니다."}, status.HTTP_400_BAD_REQUEST
-    #     )
+    if not request.user.is_staff:
+        return Response(
+            {"error": f"{str(request.user)} 님은 접근 권한이 없습니다."}, status.HTTP_400_BAD_REQUEST
+        )
 
     def init_genre():
         url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}&language=ko-KR"
@@ -39,7 +47,6 @@ def initiate_database(request):
             resp = requests.get(url).json()
             movies = resp["results"]
             for movie in movies:
-                # print("movie", movie)
                 new_movie = {}
                 new_movie["tid"] = movie["id"]
                 new_movie["title"] = movie["title"]
@@ -61,7 +68,6 @@ def initiate_database(request):
             casts = resp["cast"]
             for cast in casts:
                 if cast["known_for_department"] == "Acting":
-                    # print("hi acting!!!!!!!")
                     if cast["popularity"] <= 6:
                         continue
                     actor = {
@@ -76,7 +82,6 @@ def initiate_database(request):
                         actor.movies.add(movie.pk)
 
                 elif cast["known_for_department"] == "Directing":
-                    # print("hi Directing!!!!!!!")
                     movie.director = cast["name"]
                     movie.save()
 
@@ -89,6 +94,6 @@ def initiate_database(request):
             "genre_count": Genre.objects.all().count(),
             "actor_count": Actor.objects.all().count(),
         }
-        return Response({"data": data}, status.HTTP_201_CREATED)
+        return Response(data, status.HTTP_201_CREATED)
     except Exception as e:
         return Response({"error": e}, status.HTTP_500_INTERNAL_SERVER_ERROR)
