@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['3.34.140.15']
 # Application definition
 
 INSTALLED_APPS = [
+    "community",
     "movies",
     "accounts",
     "rest_framework",
