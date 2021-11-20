@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
+    "chat",
     "community",
     "movies",
     "accounts",
@@ -153,4 +155,15 @@ SIMPLE_JWT = {
 SWAGGER_SETTINGS = {
     "DEFAULT_MODEL_DEPTH": -1,
     "DEFAULT_MODEL_RENDERING": "example",
+}
+
+# Channels
+ASGI_APPLICATION = "config.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
