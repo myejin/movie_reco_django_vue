@@ -26,7 +26,7 @@ SECRET_KEY = "dev"  # config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.34.140.15']
 
 
 # Application definition
@@ -111,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko-kr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
@@ -153,3 +153,5 @@ SWAGGER_SETTINGS = {
     "DEFAULT_MODEL_DEPTH": -1,
     "DEFAULT_MODEL_RENDERING": "example",
 }
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
