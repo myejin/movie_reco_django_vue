@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import MovieDetail from '../views/MovieDetail.vue'
 import Chat from '../views/Chat.vue'
+import Community from '../views/Community.vue'
+
 
 Vue.use(VueRouter)
 
@@ -30,7 +32,12 @@ const routes = [
     component: MovieDetail
   },
   {
-    path:'/chat/:roomname',
+    path:'/community',
+    name:'Community',
+    component: Community
+  },
+  {
+    path:'/chat/:username',
     name:'Chat',
     component: Chat
   }

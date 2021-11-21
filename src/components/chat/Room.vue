@@ -1,73 +1,98 @@
 <template>
   <div>
-    <button class="border-1" @click="connect" v-if="socketDisabled === true">연결</button>
-    <button class="border-1" @click="disconnect" v-if="socketDisabled === false">해제</button><br>
-    <textarea class="border-1" :value="chatLog" cols="100" rows="20"></textarea><br>
-    <input class="border-1" @keyup.enter="sendMessage" v-model="inputData" type="text" size="100"><br>
-    <button class="border-1" @click="sendMessage" :disabled="socketDisabled === true">Send</button>
+    <textarea class="border-1" :value="chatLog" cols="50" rows="20"></textarea><br>
+    <input class="border-1" @keyup.enter="sendMessage" v-model="inputData" type="text" size="44">
+    <button class="border-1" @click="sendMessage">Send</button>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+const SERVER_URL = 'http://127.0.0.1:8000' // store 로 보내기
+
 export default {
   name: 'Room',
   data: function () {
     return {
-      socketDisabled: true,
-      socket: undefined,
-      // logs: [],
-      selected: 'json',
-      chatLog: 'tmp!!!!',
+      roomname: '',
+      toUsername: '',
+      chatLog: '',
       inputData: '',
     }
   },
   methods: {
+    initSetting: function () {
+      this.toUsername = this.$route.params.username 
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/chat/${this.toUsername}/room/`,  
+        headers: {
+          'Authorization': 'JWT 토큰하드코딩!!!'
+        }
+      })
+      .then(res => {
+        this.roomname = res.data.room_name
+        const msgList = res.data.messages
+        msgList.forEach(msg => {
+          this.chatLog += `${msg['from_user']['username']} : ${msg['content']} (${msg['created_at']})\n`
+        })
+        this.connect()
+      })
+      .catch(err => {
+        if (err.response['status'] === 404) {
+          console.log(err.response['status']);
+          axios({
+            method: 'post',
+            url: `${SERVER_URL}/chat/${this.toUsername}/room/`,
+            headers: {
+              'Authorization': 'JWT 토큰하드코딩!!!'
+            }
+          })
+          .then(res => {
+            this.roomname = res.data.room_name
+            this.connect()
+          })
+        }
+      })
+    },
     connect: function () {
-      console.log('hi')
       if (this.socket === undefined || this.socket.readyState === 3) {
-        this.socket = new WebSocket(`ws://localhost:8000/ws/chat/${this.$route.params.roomname}/`)
-        this.socket.onopen = () => {
-          this.socket.send(JSON.stringify({
-            message:"hihihihi",
-          }))
-        }
-        this.socketDisabled = false
-        console.log(this.socket)
-        console.log(this.socketDisabled)
-        this.socket.onerror = () => {
-          console.log({ type: 'ERROR', msg: 'ERROR:' })
-        }
-        this.socket.onmessage = (e) => {
-          console.log(e)
-          const data = JSON.parse(e.data)
-          this.chatLog += (data.message + '\n')
-          console.log({ type: 'RECV', msg: 'RECV' + e.data })
-        }
-        this.socket.onclose = (msg) => {
-          console.log({ type: 'ERROR', msg: `Closed (Code: ${msg.code}, Message: ${msg.reason})` })
+        this.socket = new WebSocket(`ws://localhost:8000/ws/chat/${this.roomname}/`)
+        this.socket.onmessage = ({ data }) => {
+          const jsonData = JSON.parse(data)
+          const datetime = new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '');
+          this.chatLog += (`username? : ${jsonData.message} (${datetime})\n`) // 로그인 후 유저네임 store에 저장
         }
       }
-
     },
     sendMessage: function () {
-      if (this.selected === 'plain') {
-        console.log({ type: 'SENT', msg: 'SENT' + this.inputData })
-        this.socket.send(this.inputData)
-      } else if (this.selected === 'json') {
-        const tmp = JSON.stringify({ 'message':this.inputData })
-        console.log({ type: 'SENT', msg: 'SENT' + JSON.stringify(tmp)})
-        this.socket.send(tmp)
-      }
+      const jsonData = JSON.stringify({ 'message': this.inputData })
+      this.socket.send(jsonData)
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/chat/${this.toUsername}/`,
+        headers: {
+          'Authorization': 'JWT 토큰하드코딩!!!'
+        },
+        data: {
+          'content': this.inputData,
+        }
+      })
       this.inputData = ''
     },
-    disconnect () {
+    disconnect: function () {
       if (this.socket.readyState === 1) {
+        this.socket.send(JSON.stringify({ 'message': "삭제할게요" }))
         this.socket.close()
-        console.log({ type: 'INFO', msg: 'DISCONNECTED' })
-        this.socketDisabled = true 
       }
     }
   },
+  created: function () {
+    this.initSetting()
+  },
+  beforeDestroy: function () {
+    this.disconnect()
+  }
 }
 </script>
 
