@@ -10,17 +10,20 @@
       :key="movieCard.id"
       :movieCard="movieCard"
     ></movie-card>
+    <weather></weather>
 </div>
 </template>
 
 <script>
 import MovieCard from '../components/home/MovieCard.vue'
+import Weather from '../components/home/Weather.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
   components:{
-    MovieCard
+    MovieCard,
+    Weather
   },
   created: function () {
     this.$store.dispatch('LoadMovieCards')

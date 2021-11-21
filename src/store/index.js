@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    movieCards:[]
+    movieCards:[],
+    seoulWeather:''
   },
   mutations: {
-    LOAD_MOVIE_CARDS: function (state, results) {
-      state.movieCards = results
+    LOAD_MOVIE_CARDS: function (state, res) {
+      state.movieCards = res
+    },
+    LOAD_WEATHER_DATA: function(state, res){
+      state.seoulWeather = res
     }
   },
   actions: {
@@ -26,6 +30,22 @@ export default new Vuex.Store({
           console.log(res)
           commit('LOAD_MOVIE_CARDS', res.data.results)
         })
+    },
+    LoadWeatherData: function ({commit}) {
+      axios({
+        method:'get',
+        url: 'https://api.openweathermap.org/data/2.5/weather',
+        params: {
+          lat:37.56826,
+          lon: 126.977829,
+          APPID: '4bae5572738ed69a8ae6ddb0835a7166'
+        }
+      })
+      .then((res => {
+        console.log(res)
+        commit('LOAD_WEATHER_DATA',res.data.weather[0].main )
+      }))
     }
+    
   },
 })

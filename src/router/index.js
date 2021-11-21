@@ -30,6 +30,7 @@ const routes = [
     component: MovieDetail
   },
 
+
 ]
 
 const router = new VueRouter({
