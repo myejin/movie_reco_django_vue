@@ -17,18 +17,22 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    LoadMovieCards: function ({commit}) {
+    LoadMovieCards: function () {
+      const token = localStorage.getItem('JWT')
+      // const header = {
+      //   Authorization: `JWT ${token}`
+      // }
       axios({
-        method: 'get',
-        url: 'https://api.themoviedb.org/3/movie/top_rated',
-        params: {
-          api_key: process.env.VUE_APP_TMDB_API_KEY,
-          language: 'ko-KR',
-        }
+        method: 'post',
+        url: 'http://3.34.140.15/movies/init/',
+        Authorization: `JWT ${token}`
       })
         .then((res) => {
           console.log(res)
-          commit('LOAD_MOVIE_CARDS', res.data.results)
+          // commit('LOAD_MOVIE_CARDS')
+        })
+        .catch((err) =>{
+          console.log(err)
         })
     },
     LoadWeatherData: function ({commit}) {
