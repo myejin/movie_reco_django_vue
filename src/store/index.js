@@ -38,7 +38,7 @@ export default new Vuex.Store({
         params: {
           lat:37.56826,
           lon: 126.977829,
-          APPID: '4bae5572738ed69a8ae6ddb0835a7166'
+          APPID: process.env.VUE_APP_WEATHER_APPID
         }
       })
       .then((res => {
