@@ -3,8 +3,6 @@ from django.conf import settings
 
 
 class ChatRoom(models.Model):
-    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='to_people')
-    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='from_people')
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -12,8 +10,13 @@ class ChatRoom(models.Model):
 
 
 class Message(models.Model):
-    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_messages')
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
+    from_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_messages"
+    )
+    to_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="received_messages"
+    )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -16,7 +16,15 @@ create_room_res_schema = {
                 "messages": [],
             }
         },
-    )
+    ),
+    "400": openapi.Response(
+        description="",
+        examples={
+            "application/json": {
+                "message": "이미 채팅방이 존재합니다.",
+            }
+        },
+    ),
 }
 go_room_res_schema = {
     "200": openapi.Response(
@@ -24,7 +32,14 @@ go_room_res_schema = {
         examples={
             "application/json": {
                 "room_name": "1_2",
-                "messages": [],
+                "messages": [
+                    {
+                        "from_user": {"username": "user1"},
+                        "to_user": {"username": "user2"},
+                        "content": "안녕하세요.",
+                        "created_at": "2021-11-21T07:03:20.926493Z",
+                    },
+                ],
             }
         },
     ),
@@ -35,7 +50,7 @@ go_room_res_schema = {
                 "message": "아직 채팅방이 없습니다. POST 요청을 시도하세요.",
             }
         },
-    )
+    ),
 }
 send_msg_res_schema = {
     "201": openapi.Response(

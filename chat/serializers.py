@@ -4,35 +4,32 @@ from .models import ChatRoom, Message
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    class ChatRoomSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = ChatRoom
-            fields = ("name",)
-    
     class UserSerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
             fields = ("username",)
-    
-    room = ChatRoomSerializer(read_only=True)
-    author = UserSerializer(read_only=True)
+
+    from_user = UserSerializer(read_only=True)
+    to_user = UserSerializer(read_only=True)
 
     class Meta:
         model = Message
         fields = (
-            "room",
-            "author",
+            "from_user",
+            "to_user",
             "content",
             "created_at",
         )
 
-class MsgSimpleSerializer(serializers.ModelSerializer): 
+
+class MsgSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = (
             "content",
             "created_at",
         )
+
 
 class MsgBodySerializer(serializers.Serializer):
     content = serializers.CharField()
