@@ -4,11 +4,11 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import MovieDetail from '../views/MovieDetail.vue'
+import Chat from '../views/Chat.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-
   {
     path: '/',
     name: 'Home',
@@ -29,7 +29,11 @@ const routes = [
     name:'MovieDetail',
     component: MovieDetail
   },
-
+  {
+    path:'/chat/:roomname',
+    name:'Chat',
+    component: Chat
+  }
 ]
 
 const router = new VueRouter({
