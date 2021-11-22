@@ -7,7 +7,6 @@ token_param = openapi.Parameter(
     description="JWT 타입으로 입력",
     required=True,
 )
-
 article_list_schema = {
     "200": openapi.Response(
         description="",
@@ -32,6 +31,8 @@ def article_res_schema(status_code):
                     "movie": {"id": 1, "title": "쇼생크 탈출"},
                     "position": "",
                     "is_finished": False,
+                    "created_at": "2021-11-22 16:57:08",
+                    "updated_at": "2021-11-22 16:57:10",
                 }
             },
         )
@@ -39,13 +40,48 @@ def article_res_schema(status_code):
     return data
 
 
-article_delete_schema = {
+delete_schema = {
     "204": openapi.Response(
-        description="삭제 완료를 알리는 메세지가 반환됩니다.",
+        description="삭제완료 메세지(`message`)를 반환됩니다.",
+    )
+}
+review_list_schema = {
+    "200": openapi.Response(
+        description="",
         examples={
             "application/json": {
-                "message": "1번 게시물이 삭제되었습니다.",
+                "article_id": 1,
+                "reviews": [
+                    {
+                        "id": 1,
+                        "author": {"username": "user1"},
+                        "content": "이거 짱 잼임",
+                        "created_at": "2021-11-22 16:57:08",
+                        "updated_at": "2021-11-22 16:57:10",
+                    }
+                ],
             }
         },
     )
 }
+
+
+def review_res_schema(status_code):
+    data = {
+        f"{status_code}": openapi.Response(
+            description="",
+            examples={
+                "application/json": {
+                    "article_id": 1,
+                    "review": {
+                        "id": 1,
+                        "author": {"username": "user1"},
+                        "content": "이거 짱 잼임",
+                        "created_at": "2021-11-22 16:57:08",
+                        "updated_at": "2021-11-22 16:57:10",
+                    },
+                }
+            },
+        )
+    }
+    return data
