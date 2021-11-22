@@ -75,7 +75,7 @@ export default {
     signup: function () {
       axios({
         method: 'post',
-        url: 'http://3.34.140.15/accounts/signup/',
+        url: `${this.$defaultUrl}/accounts/signup/`,
         data: this.credentials
       })
         .then(() => {

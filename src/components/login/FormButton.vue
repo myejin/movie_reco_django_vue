@@ -62,7 +62,7 @@ export default {
     login: function () {
       axios({
         method:'post',
-        url :'http://3.34.140.15/accounts/api/token/',
+        url :`${this.$defaultUrl}/accounts/api/token/`,
         data:this.credentials,
       })
       .then(res => {
