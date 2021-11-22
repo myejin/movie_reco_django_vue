@@ -57,7 +57,6 @@ def chat_room(request, username):
             serializer = MessageSerializer(messages, many=True)
             data = {"room_name": room.name, "messages": serializer.data}
             return Response(data, status.HTTP_200_OK)
-            # return render(request, "chat/room.html", data)
 
     if request.method == "GET":
         return go_room()
@@ -86,6 +85,5 @@ def send_message(request, username):
             room=room, from_user=me, to_user=you, content=request.data["content"]
         )
         serializer = MsgSimpleSerializer(msg)
-        # 위 메세지를 you에게 알람 보낸다.
         return Response(serializer.data, status.HTTP_201_CREATED)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
