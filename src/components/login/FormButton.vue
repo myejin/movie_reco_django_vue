@@ -4,11 +4,17 @@
     <v-form class="form-size">
       <v-text-field
         label="Username"
+        id="username"
+        v-model="credentials.username"
       ></v-text-field>
     
       <v-text-field
+        id="password"
+        v-model="credentials.password"
+        @keyup.enter="login"
+
         :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.min]"
+        :rules="[rules.required, rules.min,]"
         :type="show3 ? 'text' : 'password'"
         name="input-10-2"
         hint="At least 8 characters"
@@ -18,7 +24,10 @@
       ></v-text-field>
     </v-form>
 
-    <v-btn class="form-size">
+    <v-btn 
+      class="form-size"
+      @click="login"  
+    >
       Login
     </v-btn>
 
@@ -31,6 +40,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name:'TextField',
   data () {
@@ -40,10 +51,29 @@ export default {
         rules: {
           required: value => !!value || 'Required.',
           min: v => v.length >= 8 || 'Min 8 characters',
-          emailMatch: () => (`The email and password you entered don't match`),
         },
+        credentials: {
+          username: '',
+          password: '',
+        }
       }
     },
+  methods: {
+    login: function () {
+      axios({
+        method:'post',
+        url :`${this.$defaultUrl}/accounts/api/token/`,
+        data:this.credentials,
+      })
+      .then(res => {
+        localStorage.setItem('jwt',res.data.access)
+        this.$router.push({name:'Home'})
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
+  }
 }
 </script>
 
