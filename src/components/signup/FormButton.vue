@@ -83,6 +83,9 @@ export default {
         })
         .catch(err => {
           console.log(err)
+          if (err.response['status'] === 400) {
+            alert('이미 사용 중인 이름입니다.')
+          }
         })
     }
   }

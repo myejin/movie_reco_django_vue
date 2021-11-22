@@ -1,40 +1,54 @@
 <template>
-  <div>
-    <textarea class="border-1" :value="chatLog" cols="50" rows="20"></textarea><br>
-    <input class="border-1" @keyup.enter="sendMessage" v-model="inputData" type="text" size="44">
-    <button class="border-1" @click="sendMessage">Send</button>
+  <div style="margin: 1rem">
+    <div class="messages">
+      <message v-for="(data, idx) in chatLog" 
+        :key="idx"
+        :data="data"
+      >
+      </message>
+    </div>
+    <input class="input" @keyup.enter="sendMessage" v-model="inputData" type="text">
+    <button class="btn" @click="sendMessage">Send</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-const SERVER_URL = 'http://127.0.0.1:8000' // store 로 보내기
+import Message from './Message.vue'
 
 export default {
+  components: { 
+    Message, 
+  },
   name: 'Room',
   data: function () {
     return {
       roomname: '',
       toUsername: '',
-      chatLog: '',
+      chatLog: [],
       inputData: '',
     }
   },
   methods: {
+    setHeader: function () {
+      const token = localStorage.getItem('jwt')
+      const header = {
+        Authorization: `JWT ${token}`
+      }
+      return header 
+    },
     initSetting: function () {
       this.toUsername = this.$route.params.username 
       axios({
         method: 'get',
-        url: `${SERVER_URL}/chat/${this.toUsername}/room/`,  
-        headers: {
-          'Authorization': 'JWT 토큰하드코딩!!!'
-        }
+        url: `${this.$defaultUrl}/chat/${this.toUsername}/room/`,  
+        headers: this.setHeader()
       })
       .then(res => {
         this.roomname = res.data.room_name
         const msgList = res.data.messages
         msgList.forEach(msg => {
-          this.chatLog += `${msg['from_user']['username']} : ${msg['content']} (${msg['created_at']})\n`
+          this.chatLog.push(`${msg['from_user']['username']}\n${msg['content']}\n${msg['created_at']}`)
         })
         this.connect()
       })
@@ -43,10 +57,8 @@ export default {
           console.log(err.response['status']);
           axios({
             method: 'post',
-            url: `${SERVER_URL}/chat/${this.toUsername}/room/`,
-            headers: {
-              'Authorization': 'JWT 토큰하드코딩!!!'
-            }
+            url: `${this.$defaultUrl}/chat/${this.toUsername}/room/`,
+            headers: this.setHeader()
           })
           .then(res => {
             this.roomname = res.data.room_name
@@ -56,48 +68,62 @@ export default {
       })
     },
     connect: function () {
-      if (this.socket === undefined || this.socket.readyState === 3) {
-        this.socket = new WebSocket(`ws://localhost:8000/ws/chat/${this.roomname}/`)
-        this.socket.onmessage = ({ data }) => {
-          const jsonData = JSON.parse(data)
-          const datetime = new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '');
-          this.chatLog += (`username? : ${jsonData.message} (${datetime})\n`) // 로그인 후 유저네임 store에 저장
-        }
+      this.socket = new WebSocket(`${this.$webSockettUrl}/${this.roomname}/`)
+      this.socket.onmessage = ({ data }) => {
+        const jsonData = JSON.parse(data)
+        const datetime = new Date(new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '');
+        this.chatLog.push(`${jsonData.from}\n${jsonData.message}\n${datetime}`)
+      }
+      this.socket.onerror = (err) => {
+        console.log(err)
+        this.socket.close() 
+      }
+      this.socket.onclose = (err) => {
+        console.log('소켓 재연결 시도중..', err.reason)
+        setTimeout(() => {
+          this.socket = new WebSocket(`${this.$webSockettUrl}/${this.roomname}/`)
+        }, 1000);
       }
     },
     sendMessage: function () {
-      const jsonData = JSON.stringify({ 'message': this.inputData })
+      const myName = localStorage.getItem('myName')
+      const jsonData = JSON.stringify({ 'from': myName, 'message': this.inputData })
       this.socket.send(jsonData)
       axios({
         method: 'post',
-        url: `${SERVER_URL}/chat/${this.toUsername}/`,
-        headers: {
-          'Authorization': 'JWT 토큰하드코딩!!!'
-        },
+        url: `${this.$defaultUrl}/chat/${this.toUsername}/`,
+        headers: this.setHeader(),
         data: {
           'content': this.inputData,
         }
       })
       this.inputData = ''
     },
-    disconnect: function () {
-      if (this.socket.readyState === 1) {
-        this.socket.send(JSON.stringify({ 'message': "삭제할게요" }))
-        this.socket.close()
-      }
-    }
   },
   created: function () {
     this.initSetting()
+    window.addEventListener("unload", function () {
+      if(this.socket.readyState == WebSocket.OPEN) {
+        this.socket.close()
+      }
+    })
   },
-  beforeDestroy: function () {
-    this.disconnect()
-  }
 }
 </script>
 
 <style>
-.border-1 {
+.input {
   border: solid;
+  width: 450px; 
+  margin: 0.3rem 0;
+}
+.btn {
+  border: solid;
+  width: 50px
+}
+.messages {
+  width: 500px;
+  height: 400px;
+  overflow: scroll;
 }
 </style>
