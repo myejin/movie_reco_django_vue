@@ -36,20 +36,35 @@ export default {
       return header 
     },
     createArticle: function () {
-      axios({
-        method: 'post',
-        url: `${this.$defaultUrl}/articles/`,  
-        headers: this.setHeader(),
-        data: {
-          "movie_pk": 1, // movieID 가져와야해, 일단 하드코딩
-          "position": '아직 위치 없음'  // gps api 사용해야해
-        }
-      })
-      .then(() => {
-        alert('게시글이 등록되었어요.')
-        this.$router.push({name:'Community'})
-      })
-    }
+      const pos = this.getPosition()
+      if (pos !== 'err') {
+        axios({
+          method: 'post',
+          url: `${this.$defaultUrl}/articles/`,  
+          headers: this.setHeader(),
+          data: {
+            'movie_pk': this.$route.params.movieId,
+            'latitude': pos.latitude,
+            'longitude': pos.longitude
+          }
+        })
+        .then(() => {
+          alert('메이트 모집글이 등록되었어요.')
+          this.$router.push({name:'Community'})
+        })
+      }
+    },
+    getPosition: function () {
+      if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => position.coords, err => {
+          alert(`위치정보를 받아오는 데 에러가 발생합니다.\n${err}`)
+          return 'err'
+        })
+      } else {
+        alert('위치정보를 사용할 수 없습니다.')
+        return 'err'
+      }
+    },
   }
 }
 </script>
