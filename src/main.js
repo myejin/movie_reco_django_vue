@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 
-
+Vue.prototype.$defaultUrl = 'http://127.0.0.1:8000';
 Vue.config.productionTip = false
 
 new Vue({

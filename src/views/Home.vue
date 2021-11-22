@@ -5,31 +5,22 @@
      <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
     </router-link>
     <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-    <movie-card
-      v-for="movieCard in movieCards"
-      :key="movieCard.id"
-      :movieCard="movieCard"
-    ></movie-card>
+
+    <weather-movie
+    ></weather-movie>
     <weather></weather>
 </div>
 </template>
 
 <script>
-import MovieCard from '../components/home/MovieCard.vue'
+import WeatherMovie from '../components/home/WeatherMovie.vue'
 import Weather from '../components/home/Weather.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
   components:{
-    MovieCard,
+    WeatherMovie,
     Weather
   },
-  created: function () {
-    this.$store.dispatch('LoadMovieCards')
-  },
-  computed: {
-    ...mapState(['movieCards'])
-  }
 }
 </script>
