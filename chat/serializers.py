@@ -11,7 +11,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     from_user = UserSerializer(read_only=True)
     to_user = UserSerializer(read_only=True)
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Message
@@ -24,7 +24,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class MsgSimpleSerializer(serializers.ModelSerializer):
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     
     class Meta:
         model = Message
