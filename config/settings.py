@@ -26,12 +26,14 @@ SECRET_KEY = "dev"  # config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ['3.34.140.15']
+ALLOWED_HOSTS = ["3.34.140.15"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
+    "chat",
     "community",
     "movies",
     "accounts",
@@ -155,4 +157,15 @@ SWAGGER_SETTINGS = {
     "DEFAULT_MODEL_RENDERING": "example",
 }
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Channels
+ASGI_APPLICATION = "config.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
