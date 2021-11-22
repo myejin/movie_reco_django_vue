@@ -7,7 +7,7 @@
       >
       </message>
     </div>
-    <input class="input" @keyup.enter="sendMessage" v-model="inputData" type="text">
+    <input class="input" @keyup.enter="sendMessage" v-model.trim="inputData" type="text">
     <button class="btn" @click="sendMessage">Send</button>
   </div>
 </template>
@@ -94,18 +94,20 @@ export default {
       }
     },
     sendMessage: function () {
-      const myName = localStorage.getItem('myName')
-      const jsonData = JSON.stringify({ 'from': myName, 'message': this.inputData })
-      this.socket.send(jsonData)
-      axios({
-        method: 'post',
-        url: `${this.$defaultUrl}/chat/${this.toUsername}/`,
-        headers: this.setHeader(),
-        data: {
-          'content': this.inputData,
-        }
-      })
-      this.inputData = ''
+      if (this.inputData) {
+        const myName = localStorage.getItem('myName')
+        const jsonData = JSON.stringify({ 'from': myName, 'message': this.inputData })
+        this.socket.send(jsonData)
+        axios({
+          method: 'post',
+          url: `${this.$defaultUrl}/chat/${this.toUsername}/`,
+          headers: this.setHeader(),
+          data: {
+            'content': this.inputData,
+          }
+        })
+        this.inputData = ''
+      }
     },
   },
   created: function () {

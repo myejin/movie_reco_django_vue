@@ -35,6 +35,15 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
+          
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              <router-link :to="{name: 'Community'}">Community</router-link>
+            </v-list-item-title>
+          </v-list-item>
 
           <v-list-item>
             <v-list-item-icon>

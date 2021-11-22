@@ -1,16 +1,50 @@
 <template>
   <div>
-    <router-link :to="{name: 'Chat'}">채팅하러가기</router-link>
-    <!-- path에 들어갈 username 어떻게 설정하지? -->
-    <!-- 아티클 컴포넌트도 만들자 -->
+    <Article v-for="article of articles"
+      :key="article.id"
+      :article="article"
+    >
+    </Article>
   </div>
 </template>
 
 <script>
+import Article from '@/components/article/Article.vue'
+import axios from 'axios'
 
 export default {
   name:'Community',
   components: {
+    Article,
+  },
+  data: function () {
+    return {
+      articles: [],
+      articleCount: 0,
+    }
+  },
+  methods: {
+    setHeader: function () {
+      const token = localStorage.getItem('jwt')
+      const header = {
+        Authorization: `JWT ${token}`
+      }
+      return header 
+    },
+    getArticles: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/articles/`,  
+        headers: this.setHeader()
+      })
+      .then(res => {
+        this.articles = res.data['articles']
+        this.articleCount = res.data['count']
+      })
+    },
+  },
+  created: function () {
+    this.getArticles()
   }
 }
 
