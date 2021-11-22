@@ -33,9 +33,9 @@ export default new Vuex.Store({
 
         let genresN = 1
         if (response1.data.weather[0].description === "broken clouds") {
-            genresN = 19
+            genresN = 4
         } else {
-            genresN = 9
+            genresN =  7
         }
         
         const response2 = await axios({
@@ -47,12 +47,12 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    isWeather: function (state) {
-      return state.seoulWeather.data.weather ? true : false
-    },
-    isMovie: function (state) {
-      return state.weatherMovie.data.Movies ? true : false
-    },
+    // isWeather: function (state) {
+    //   return state.seoulWeather.data.weather ? true : false
+    // },
+    // isMovie: function (state) {
+    //   return state.weatherMovie.data.Movies ? true : false
+    // },
     weatherIcon: function (state) {
       const iconId = state.seoulWeather.data.weather[0].icon
       return `http://openweathermap.org/img/wn/${iconId}@2x.png`

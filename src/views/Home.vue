@@ -1,14 +1,16 @@
 <template>
 
-<div>
+<div class="bg">
     <router-link :to="{name: 'Home'}">
      <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
     </router-link>
     <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
 
-    <weather></weather>
-    <weather-movie></weather-movie>
-    <div style="padding:2000px"></div>
+    <div style="position:relative;">
+      <weather></weather>
+      <weather-movie></weather-movie>
+    </div>
+
 </div>
 </template>
 
@@ -28,3 +30,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.bg {
+  background-image: url('../assets/main_bg.jpg');
+  background-size : 100%;
+  background-repeat: repeat;
+  position:absolute;
+  width: 100%;
+  height: 100%;
+}
+</style>
