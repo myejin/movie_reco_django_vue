@@ -1,22 +1,23 @@
 <template>
-  <div>
-    {{weatherMovie.data}}
-    {{seoulWeather}}
+  <div :v-if="isMovie">
+    <div 
+ 
+    >
+      <p>{{weatherMovie.data.movies}}</p>
+
+    </div>
+   
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapGetters } from 'vuex'
 
 export default {
-  name: 'MovieCard',
-  created: function () {
-    this.$store.dispatch('LoadWeatherMovie')
-  },
-  computed: {
-    ...mapState([
-      'weatherMovie',
-      ])
+  name: 'WeatherMovie',
+  computed:{
+    ...mapState(['weatherMovie']),
+    ...mapGetters(['isMovie'])
   }
 }
 </script>
