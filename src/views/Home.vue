@@ -5,11 +5,8 @@
         <v-container >
           <v-row >
           
-            <!-- <v-col class="pt-10 my-10 pb-16">
-              <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-            </v-col>  -->
 
-            <v-col sm="0" lg="2">
+            <v-col  sm="0" lg="2">
               <div style="position:relative;">
                 <img class="img-size" src="../assets/rain.jpg" alt="">
                 <weather></weather>

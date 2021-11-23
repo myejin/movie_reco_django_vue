@@ -6,12 +6,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     seoulWeather:[],
+    addWeatherData:[],
     weatherMovie: [],
     genreMovies:[]
   },
   mutations: {
     LOAD_WEATHER_DATA: function(state, res){
       state.seoulWeather = res
+    },
+    LOAD_ADD_DATA: function(state,res) {
+      state.addWeatherData = res
     },
     LOAD_WEATHER_MOVIE:function(state, res){
       state.weatherMovie = res
@@ -32,8 +36,9 @@ export default new Vuex.Store({
         }
       })
         console.log()
-        console.log(response1,"loadweatherdata")
-        commit('LOAD_WEATHER_DATA',response1)
+        console.log(response1.data,"loadweatherdata")
+        commit('LOAD_WEATHER_DATA',response1.data.weather[0])
+        commit('LOAD_ADD_DATA',response1.data)
 
         let genresN = 1
         if (response1.data.weather[0].main === "Thunderstorm") {
@@ -57,7 +62,7 @@ export default new Vuex.Store({
               url:`http://127.0.0.1:8000/genres/${genresN}/movies/`,
             })
         console.log(response2, "???????")
-        commit('LOAD_WEATHER_MOVIE', response2)
+        commit('LOAD_WEATHER_MOVIE', response2.data.movies)
     },
     LoadGenreMovies: function ({commit}) {
       axios({
@@ -70,15 +75,25 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    // isWeather: function (state) {
-    //   return state.seoulWeather.data.weather ? true : false
-    // },
-    // isMovie: function (state) {
-    //   return state.weatherMovie.data.Movies ? true : false
-    // },
-    weatherIcon: function (state) {
-      const iconId = state.seoulWeather.data.weather[0].icon
-      return `http://openweathermap.org/img/wn/${iconId}@2x.png`
-    }
+    nowTemp: function(state) {
+      if (state.addWeatherData.main) {
+        const nowT = Math.round(state.addWeatherData.main.temp - 273.15)
+        return nowT
+      } return ''
+    },
+    maxTemp: function(state) {
+      if (state.addWeatherData.main) {
+        const maxT = Math.round(state.addWeatherData.main.temp_max - 273.15)
+        return maxT
+      } return ''
+    },
+    minTemp: function(state) {
+      if (state.addWeatherData.main) {
+        const minT = Math.round(state.addWeatherData.main.temp_min - 273.15)
+        return minT
+      } return ''
+    },
+
   }
+
 })

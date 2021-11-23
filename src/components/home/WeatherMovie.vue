@@ -1,13 +1,13 @@
 <template>
   <div class="carousel-position">
    <carousel
-      :per-Page="4"
+      :per-Page="2"
       :paginationEnabled="false"
       class="carousel-size">
         <slide     
-          v-for="movie in weatherMovie.data.movies"
+          v-for="movie in weatherMovie"
           :key="movie.id"
-          style="margin: 0px 50px;"
+          
           >
           <img class="img-size" :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" alt="">
          
