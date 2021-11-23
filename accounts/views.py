@@ -29,17 +29,23 @@ def signup(request):
         user.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
 
-
+@swagger_auto_schema(
+    method="get",
+    operation_description="해당 유저의 팔로우/팔로잉 수 및 팔로워 데이터를 반환합니다.",
+    manual_parameters=[token_param],
+    responses=follow_get_schema,
+)
 @swagger_auto_schema(
     method="post",
     operation_description="다른 유저와 팔로우 관계를 시작/취소(토글)합니다.",
     manual_parameters=[token_param],
     responses=follow_res_schema,
 )
-@api_view(["POST"])
+@api_view(["GET", "POST"])
 def follow(request, username):
-    if request.user.is_authenticated:
-        you = get_object_or_404(get_user_model(), username=username)
+    you = get_object_or_404(get_user_model(), username=username)
+
+    def follow_post():
         if request.user != you:
             if you.followers.filter(pk=request.user.pk).exists():
                 you.followers.remove(request.user)
@@ -52,6 +58,21 @@ def follow(request, username):
             "following_count": you.followings.count(),
         }
         return Response(data, status.HTTP_200_OK)
+    
+    def follow_get():
+        serializer = UserSimpleSerializer(you.followers.all(), many=True)
+        data = {
+            "follower_count": you.followers.count(),
+            "following_count": you.followings.count(),
+            "follower_list": serializer.data,
+        }
+        return Response(data, status.HTTP_200_OK)
+
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            return follow_get()
+        else:
+            return follow_post()        
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

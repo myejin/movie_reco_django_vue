@@ -30,6 +30,21 @@ follow_res_schema = {
         },
     )
 }
+follow_get_schema = {
+    "200": openapi.Response(
+        description="",
+        examples={
+            "application/json": {
+                "follower_count": 100000,
+                "following_count": 1,
+                "follower_list": [
+                    { "username": "user1" }
+                ],
+            }
+        },
+    )
+}
+
 similar_res_schema = {
     "200": openapi.Response(
         description="영화(rate_movies)는 평점이 높은 순으로 반환됩니다.",

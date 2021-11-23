@@ -29,7 +29,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "movie",
-            "position",
+            "latitude",
+            "longitude",
             "is_finished",
             "created_at",
             "updated_at",
@@ -38,7 +39,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 class ArticleCreateSerializer(serializers.Serializer):
     movie_pk = serializers.IntegerField()
-    position = serializers.CharField()
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
 
 
 class ArticleUpdateSerializer(serializers.Serializer):

@@ -35,8 +35,9 @@ def article_list_create(request):
 
     def article_create(request):
         movie = get_object_or_404(Movie, pk=request.data["movie_pk"])
-        position = request.data["position"]
-        article = Article.objects.create(author=request.user, movie=movie, position=position)
+        latitude = request.data["latitude"]
+        longitude = request.data["longitude"]
+        article = Article.objects.create(author=request.user, movie=movie, latitude=latitude, longitude=longitude)
         return Response(ArticleSerializer(article).data, status=status.HTTP_201_CREATED)
 
     if request.user.is_authenticated:
