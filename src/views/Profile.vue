@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <span class="bg"></span> -->
+    <span class="bg"></span>
     <v-app id="inspire">
       <v-container >
         <div class="m-2">
