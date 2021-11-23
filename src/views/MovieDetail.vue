@@ -19,7 +19,7 @@
           
           </v-row>
         </v-container>
-        <actors></actors>
+        <!-- <actors></actors> -->
       </v-app>
     
   </div>
@@ -27,13 +27,13 @@
 
 <script>
 import Detail from '@/components/moviedetail/Detail'
-import Actors from '@/components/moviedetail/Actors'
+// import Actors from '@/components/moviedetail/Actors'
 
 export default {
   name:'MovieDetail',
   components: {
     Detail,
-    Actors,
+    // Actors,
   }
 }
 </script>

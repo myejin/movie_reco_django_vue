@@ -34,19 +34,49 @@
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
             <v-list-item-title>
-              <router-link @click.native="logout" to="#">
-                Logout
-              </router-link>
+              <router-link :to="{name: 'Home'}">Home</router-link>
             </v-list-item-title>
           </v-list-item>
+          
+          <div v-if="!isLogin">
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-outline</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link :to="{name: 'Signup'}">Signup</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link :to="{name: 'Login'}">Login</router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </div>
+          <div v-else>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-edit</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link :to="{name: 'Profile', params: { username: myName }}">Profile</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link @click.native="logout" to="#">
+                  Logout
+                </router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </div>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -65,10 +95,22 @@ export default {
   methods:{
     logout: function () {
       localStorage.removeItem('jwt')
+      localStorage.removeItem('myName')
       this.$router.push({name:'Login'})
     }
   },
-
+  computed: {
+    isLogin: function () {
+      if ('jwt' in localStorage) {
+        return true 
+      } else {
+        return false 
+      }
+    },
+    myName: function () {
+      return localStorage.getItem('myName')
+    }
+  }
 };
 
 </script>

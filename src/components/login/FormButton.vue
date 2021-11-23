@@ -67,6 +67,7 @@ export default {
       })
       .then(res => {
         localStorage.setItem('jwt',res.data.access)
+        localStorage.setItem('myName', this.credentials.username)
         this.$router.push({name:'Home'})
       })
       .catch(err => {
