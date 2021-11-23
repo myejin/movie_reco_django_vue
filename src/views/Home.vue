@@ -22,9 +22,6 @@
      <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
     </router-link>
     <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-    <weather-movie
-    ></weather-movie>
-    <weather></weather>
     <similar-user></similar-user>
   </div>
 </template>
