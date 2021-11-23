@@ -6,6 +6,7 @@ import Home from '../views/Home.vue'
 import MovieDetail from '../views/MovieDetail.vue'
 import Chat from '../views/Chat.vue'
 import Community from '../views/Community.vue'
+import Profile from '../views/Profile.vue'
 
 
 Vue.use(VueRouter)
@@ -25,6 +26,11 @@ const routes = [
     path: '/accounts/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path:'/profile/:username',
+    name:'Profile',
+    component: Profile
   },
   {
     path:'/movie/:movieId',
