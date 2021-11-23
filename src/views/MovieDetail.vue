@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="bg">
+    <span class="bg"></span>
       <v-app id="inspire">
         <v-container >
           <v-row justify="space-between">
@@ -21,7 +21,7 @@
         </v-container>
         <!-- <actors></actors> -->
       </v-app>
-    </span>
+    
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
   background-repeat: repeat;
   position:absolute;
   width: 100%;
-  height: 2000px;
+  height: 100%;
 }
 
 #inspire {

@@ -4,6 +4,7 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import MovieDetail from '../views/MovieDetail.vue'
+import GenreMovies from '../views/GenreMovies.vue'
 import Chat from '../views/Chat.vue'
 import Community from '../views/Community.vue'
 import Profile from '../views/Profile.vue'
@@ -37,6 +38,12 @@ const routes = [
     name:'MovieDetail',
     component: MovieDetail
   },
+  {
+    path:'/genres/:movieId/movies',
+    name:'GenreMovies',
+    component: GenreMovies
+  },
+
   {
     path:'/community',
     name:'Community',
