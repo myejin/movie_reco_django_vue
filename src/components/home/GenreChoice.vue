@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <div v-if="!profile.likeGenres.length && finish === false">
+  <span>
+    <span v-if="finish === false">
       <h2>좋아하는 장르가 뭔가요?</h2>
       <v-btn v-for="genre of genres"
         :key="genre.id"
         @click="addLikeGenres(genre.id)"
+        style="margin: 0.1rem;"
       >
-      {{ genre.name }}
+        {{ genre.name }}
       </v-btn>
-      <button @click="saveGenreList">선택완료</button>
-    </div>
-  </div>
+      <v-btn color="accent" @click="saveGenreList">선택완료</v-btn>
+    </span>
+  </span>
 </template>
 
 <script>
@@ -72,6 +73,10 @@ export default {
         data: {
           'genres': this.likeGenres,
         }
+      })
+      .then(() => {
+        alert('장르가 저장되었어요!')
+        this.$router.go()
       })
     }
   },

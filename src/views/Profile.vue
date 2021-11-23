@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="bg"></span>
+    <!-- <span class="bg"></span> -->
     <v-app id="inspire">
       <v-container >
         <div class="m-2">
@@ -24,16 +24,25 @@
           </v-row>
         </div>
         <div class="m-2">
-          <h3>좋아하는 장르</h3>
-          <div v-if="profile.likeGenres.length">
-            <span v-for="genre of profile.likeGenres" :key="genre.id">
-              <!-- <router-link :to="{name: 'MovieDetail', params: { genreId: genre.id }}"> -->
-                {{ genre.name }}
-              <!-- </router-link> -->
-              &nbsp;
-            </span>
+          <v-row no-gutters v-if="!show">
+            <v-col>
+              <h3>좋아하는 장르</h3>
+              <div v-if="profile.likeGenres.length">
+                <span v-for="genre of profile.likeGenres" :key="genre.id">
+                  <!-- <router-link :to="{name: 'MovieDetail', params: { genreId: genre.id }}"> -->
+                    {{ genre.name }}
+                  <!-- </router-link> -->
+                  &nbsp;
+                </span>
+              </div>
+              <div v-else>특별히 없어요.</div>
+            </v-col>
+            <v-col v-if="isMyProfile"><v-btn @click="genreToggle">변경</v-btn></v-col>
+          </v-row>
+          <div v-else>
+            <genre-choice></genre-choice>
+            <v-btn @click="genreToggle" color="accent" style="margin: 0.1rem;">취소</v-btn>
           </div>
-          <div v-else>특별히 없어요.</div>
         </div>
         <div class="m-2">
           <h3>위시리스트</h3>
@@ -101,9 +110,13 @@
 
 <script>
 import axios from 'axios'
+import GenreChoice from '../components/home/GenreChoice.vue'
 
 export default {
   name:'Profile',
+  components: {
+    GenreChoice
+  },
   data: function () {
     return {
       profile: {
@@ -116,6 +129,7 @@ export default {
       },
       isFollow: false,
       followBtn: '',
+      show: false,
     }
   },
   methods: {
@@ -183,6 +197,9 @@ export default {
     },
     getSrc: function (posterPath) {
       return `https://image.tmdb.org/t/p/original/${posterPath}`
+    },
+    genreToggle: function () {
+      this.show = !this.show
     }
   },
   computed: {

@@ -16,7 +16,9 @@
           
           </v-row>
           <br>
-          <genre-choice></genre-choice>
+          <div v-if="!profile.likeGenres.length">
+            <genre-choice></genre-choice>
+          </div>
           <similar-user></similar-user>
         </v-container>
       </v-app>
@@ -34,6 +36,7 @@ import WeatherMovie from '../components/home/WeatherMovie.vue'
 import Weather from '../components/home/Weather.vue'
 import SimilarUser from '../components/home/SimilarUser.vue'
 import GenreChoice from '../components/home/GenreChoice.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -43,7 +46,11 @@ export default {
     SimilarUser,
     GenreChoice,
   },
-
+  computed: {
+    ...mapState([
+      'profile',
+    ])
+  },
   created: function () {
     this.$store.dispatch('LoadWeatherMovie')
   },
