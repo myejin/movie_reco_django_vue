@@ -1,98 +1,101 @@
 <template>
   <div>
-    <v-container class="align-center">
-      <div class="m-2">
-        <v-row>
-          <h2 style="margin: 0.5rem">{{ username }}</h2>
-          <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
-            <p>팔로워</p>
-            <p>{{ profile.followerCnt }}</p>
-          </v-sheet>
-          <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
-            <p>팔로잉</p>
-            <p>{{ profile.followingCnt }}</p>
-          </v-sheet>
-          <v-btn 
-            @click="followToggle" 
-            v-if="!isMyProfile"
-            style="margin: 0.5rem 1rem;"
-          >
-            {{ followBtn }}
-          </v-btn>
-        </v-row>
-      </div>
-      <div class="m-2">
-        <h3>좋아하는 장르</h3>
-        <div v-if="profile.likeGenres.length">
-          <span v-for="genre of profile.likeGenres" :key="genre.id">
-            <!-- <router-link :to="{name: 'MovieDetail', params: { genreId: genre.id }}"> -->
-              {{ genre.name }}
-            <!-- </router-link> -->
-            &nbsp;
-          </span>
-        </div>
-        <div v-else>특별히 없어요.</div>
-      </div>
-      <div class="m-2">
-        <h3>위시리스트</h3>
-        <div v-if="profile.wishMovies.length">
+    <span class="bg"></span>
+    <v-app id="inspire">
+      <v-container >
+        <div class="m-2">
           <v-row>
-            <v-card 
-              v-for="movie of profile.wishMovies"
-              :key="movie.id"
-              width="300"
-              style="margin: 1rem;"
+            <h2 style="margin: 0.5rem">{{ username }}</h2>
+            <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
+              <p>팔로워</p>
+              <p>{{ profile.followerCnt }}</p>
+            </v-sheet>
+            <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
+              <p>팔로잉</p>
+              <p>{{ profile.followingCnt }}</p>
+            </v-sheet>
+            <v-btn 
+              @click="followToggle" 
+              v-if="!isMyProfile"
+              style="margin: 0.5rem 1rem;"
             >
-              <router-link :to="{name: 'MovieDetail', params: { movieId: movie.id }}">
-                <v-img
-                  class="white--text align-end"
-                  :src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
-                  width="300"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                >
-                </v-img>
-                <v-card-title style="padding: 0;">
-                  <v-spacer />
-                  <div class="cardTitle">{{ movie.title }}</div>
-                  <v-spacer />
-                </v-card-title>
-              </router-link>
-            </v-card>
+              {{ followBtn }}
+            </v-btn>
           </v-row>
         </div>
-        <div v-else>등록된 영화가 없어요.</div>
-      </div>
-      <div class="m-2">
-        <h3>평점을 매긴 영화</h3>
-        <div v-if="profile.rateMovies.length">
-          <v-row>
-            <v-card 
-              v-for="data of profile.rateMovies"
-              :key="data.movie.id"
-              width="300"
-              style="margin: 1rem;"
-            >
-              <router-link :to="{name: 'MovieDetail', params: { movieId: data.movie.id }}">
-                <v-img
-                  class="white--text align-end"
-                  :src="'https://image.tmdb.org/t/p/original/' + data.movie.poster_path"
-                  width="300"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                >
-                  <v-card-text style="color: white; position: absolute; bottom: 0; left: 0;">{{ data.rank }}</v-card-text>
-                </v-img>
-                <v-card-title style="padding: 0;">
-                  <v-spacer />
-                  <div class="cardTitle">{{ data.movie.title }}</div>
-                  <v-spacer />
-                </v-card-title>
-              </router-link>
-            </v-card>
-          </v-row>
+        <div class="m-2">
+          <h3>좋아하는 장르</h3>
+          <div v-if="profile.likeGenres.length">
+            <span v-for="genre of profile.likeGenres" :key="genre.id">
+              <!-- <router-link :to="{name: 'MovieDetail', params: { genreId: genre.id }}"> -->
+                {{ genre.name }}
+              <!-- </router-link> -->
+              &nbsp;
+            </span>
+          </div>
+          <div v-else>특별히 없어요.</div>
         </div>
-        <div v-else>아직 없어요.</div>
-      </div>
-    </v-container>
+        <div class="m-2">
+          <h3>위시리스트</h3>
+          <div v-if="profile.wishMovies.length">
+            <v-row>
+              <v-card 
+                v-for="movie of profile.wishMovies"
+                :key="movie.id"
+                width="300"
+                style="margin: 1rem;"
+              >
+                <router-link :to="{name: 'MovieDetail', params: { movieId: movie.id }}">
+                  <v-img
+                    class="white--text align-end"
+                    :src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
+                    width="300"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  >
+                  </v-img>
+                  <v-card-title style="padding: 0;">
+                    <v-spacer />
+                    <div class="cardTitle">{{ movie.title }}</div>
+                    <v-spacer />
+                  </v-card-title>
+                </router-link>
+              </v-card>
+            </v-row>
+          </div>
+          <div v-else>등록된 영화가 없어요.</div>
+        </div>
+        <div class="m-2">
+          <h3>평점을 매긴 영화</h3>
+          <div v-if="profile.rateMovies.length">
+            <v-row>
+              <v-card 
+                v-for="data of profile.rateMovies"
+                :key="data.movie.id"
+                width="300"
+                style="margin: 1rem;"
+              >
+                <router-link :to="{name: 'MovieDetail', params: { movieId: data.movie.id }}">
+                  <v-img
+                    class="white--text align-end"
+                    :src="'https://image.tmdb.org/t/p/original/' + data.movie.poster_path"
+                    width="300"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  >
+                    <v-card-text style="color: white; position: absolute; bottom: 0; left: 0;">{{ data.rank }}</v-card-text>
+                  </v-img>
+                  <v-card-title style="padding: 0;">
+                    <v-spacer />
+                    <div class="cardTitle">{{ data.movie.title }}</div>
+                    <v-spacer />
+                  </v-card-title>
+                </router-link>
+              </v-card>
+            </v-row>
+          </div>
+          <div v-else>아직 없어요.</div>
+        </div>
+      </v-container>
+    </v-app>
   </div>
 </template>
 
@@ -208,7 +211,7 @@ export default {
   height: 100%;
 }
 
-.inspire {
+#inspire {
   background: none;
 }
 

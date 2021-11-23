@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 1rem 0;">
     <div v-if="userCount === 0">
       <p>많은 평점을 매길수록 많은 추천을 해드릴 수 있어요!</p>
     </div>

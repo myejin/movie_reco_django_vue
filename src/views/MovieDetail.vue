@@ -19,7 +19,6 @@
           
           </v-row>
         </v-container>
-        <!-- <actors></actors> -->
       </v-app>
     
   </div>

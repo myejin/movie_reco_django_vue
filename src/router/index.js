@@ -39,7 +39,7 @@ const routes = [
     component: MovieDetail
   },
   {
-    path:'/genres/:movieId/movies',
+    path:'/genres/:genreId/movies',
     name:'GenreMovies',
     component: GenreMovies
   },

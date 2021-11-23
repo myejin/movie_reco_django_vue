@@ -8,7 +8,11 @@ export default new Vuex.Store({
     seoulWeather:[],
     addWeatherData:[],
     weatherMovie: [],
-    genreMovies:[]
+    profile: {
+      likeGenres: [],
+      rateMovies: [],
+      wishMovies: [],
+    },
   },
   mutations: {
     LOAD_WEATHER_DATA: function(state, res){
@@ -22,7 +26,12 @@ export default new Vuex.Store({
     },
     LOAD_GENRE_MOVIES:function(state,res) {
       state.genreMovies = res
-    }
+    },
+    SET_PROFILE: function (state, res) {
+      state.profile.likeGenres = res['like_genres']
+      state.profile.rateMovies = res['rate_movies']
+      state.profile.wishMovies = res['wish_movies']
+    },
   },
   actions: {
     async LoadWeatherMovie ({commit}) {
@@ -72,7 +81,10 @@ export default new Vuex.Store({
       .then(res => {
         commit('LOAD_GENRE_MOVIES', res.data)
       })
-    }
+    },
+    setProfile: function (context, data) {
+      context.commit('SET_PROFILE', data)
+    },
   },
   getters: {
     nowTemp: function(state) {

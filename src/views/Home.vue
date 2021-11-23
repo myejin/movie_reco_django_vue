@@ -15,6 +15,9 @@
             </v-col>
           
           </v-row>
+          <br>
+          <genre-choice></genre-choice>
+          <similar-user></similar-user>
         </v-container>
       </v-app>
     
@@ -22,7 +25,6 @@
      <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
     </router-link>
     <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-    <similar-user></similar-user>
   </div>
 </template>
 
@@ -31,6 +33,7 @@
 import WeatherMovie from '../components/home/WeatherMovie.vue'
 import Weather from '../components/home/Weather.vue'
 import SimilarUser from '../components/home/SimilarUser.vue'
+import GenreChoice from '../components/home/GenreChoice.vue'
 
 export default {
   name: 'Home',
@@ -38,6 +41,7 @@ export default {
     WeatherMovie,
     Weather,
     SimilarUser,
+    GenreChoice,
   },
 
   created: function () {
