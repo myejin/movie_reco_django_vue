@@ -27,11 +27,8 @@
     <weather></weather>
     <similar-user></similar-user>
   </div>
-
-
 </template>
 
-</template>
 
 <script>
 import WeatherMovie from '../components/home/WeatherMovie.vue'
