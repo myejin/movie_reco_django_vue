@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     seoulWeather:[],
-    weatherMovie: []
+    weatherMovie: [],
+    genreMovies:[]
   },
   mutations: {
     LOAD_WEATHER_DATA: function(state, res){
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     LOAD_WEATHER_MOVIE:function(state, res){
       state.weatherMovie = res
     },
+    LOAD_GENRE_MOVIES:function(state,res) {
+      state.genreMovies = res
+    }
   },
   actions: {
     async LoadWeatherMovie ({commit}) {
@@ -55,6 +59,15 @@ export default new Vuex.Store({
         console.log(response2, "???????")
         commit('LOAD_WEATHER_MOVIE', response2)
     },
+    LoadGenreMovies: function ({commit}) {
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/genres/1/movies/',
+      })
+      .then(res => {
+        commit('LOAD_GENRE_MOVIES', res.data)
+      })
+    }
   },
   getters: {
     // isWeather: function (state) {
