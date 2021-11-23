@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import UserSimpleSerializer, UserRequestSerializer, GenreUpdateSerializer
-from movies.models import MovieRank, Genre
+from movies.models import MovieRank, Genre, Movie
 from movies.serializers import MovieListSerializer, MovieRankSerializer, GenreSerializer
 from .schemas import *
 
@@ -93,12 +93,16 @@ def similar(request):
             continue
         your_like_movies = MovieRank.objects.filter(user=user, rank__gte=4).values("movie")
         if my_like_movies.difference(your_like_movies).count() < count:
+            rate_movies = list(MovieRank.objects.filter(user=user).order_by("-rank").values("movie_id"))
+            for i in range(len(rate_movies)):
+                movie = get_object_or_404(Movie, pk=rate_movies[i]['movie_id'])
+                serializer = MovieListSerializer(movie)
+                rate_movies[i]['movie_detail'] = serializer.data 
+
             data = {
                 "user_id": user.pk,
                 "username": user.username,
-                "rate_movies": list(
-                    MovieRank.objects.filter(user=user).order_by("-rank").values("movie_id", "rank")
-                ),
+                "rate_movies": rate_movies,
             }
             similar_users.append(data)
 

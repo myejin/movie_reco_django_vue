@@ -42,7 +42,7 @@ def initiate_database(request):
                 serializer.save()
 
     def init_movie():
-        for i in range(1, 5):  # 11
+        for i in range(1, 11):
             url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={API_KEY}&language=ko-KR&region=KR&page={i}"
             resp = requests.get(url).json()
             movies = resp["results"]

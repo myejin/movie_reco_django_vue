@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from ..models import Movie, MovieRank
 from ..serializers import (
     RankBodySerializer,
+    MovieSerializer
 )
 
 from drf_yasg.utils import swagger_auto_schema
@@ -74,3 +75,19 @@ def rate(request, movie_pk):
             }
             return Response(data, status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@swagger_auto_schema(
+    method="get",
+    operation_description="특정 영화의 정보를 반환합니다.",
+    manual_parameters=[token_param],
+    # responses=msg_res_schema("쇼생크 탈출 이(가) 위시리스트에 추가되었습니다."),
+)
+@api_view(["GET"])
+def detail(request, movie_pk):
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    
