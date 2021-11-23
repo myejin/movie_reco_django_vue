@@ -1,8 +1,10 @@
 <template>
-  <div >
-    <img class="img-size" src="../../assets/rain.jpg" alt="">
-    <!-- <img :src="weatherIcon" alt=""> -->
-    <p>{{seoulWeather.data.weather[0].main}}</p>
+  <div class="weather-position">
+    
+
+    <img :src="weatherIcon" alt="">
+    <p class="font-style">{{seoulWeather.data.weather[0].main}}</p>
+    <!-- <p class="font-style">{{seoulWeather.data.main.temp - 273.15}}</p> -->
   
   </div>
 </template>
@@ -15,14 +17,18 @@ export default {
   computed: {
     ...mapState(['seoulWeather']),
     ...mapGetters(['weatherIcon'])
-  }
+  },
 }
 </script>
 
 <style scoped>
-.img-size {
-  position:absolute;
-  margin: 0px 200px;
-  height: 800px;
+.weather-position {
+  position: absolute;
+  top:150px;
+  left: 150px;
+}
+.font-style {
+  color: white;
+  font-size: 80px;
 }
 </style>

@@ -32,11 +32,21 @@ export default new Vuex.Store({
         commit('LOAD_WEATHER_DATA',response1)
 
         let genresN = 1
-        if (response1.data.weather[0].description === "broken clouds") {
-            genresN = 4
-        } else {
-            genresN =  7
-        }
+        if (response1.data.weather[0].main === "Thunderstorm") {
+            genresN = 5
+        } else if (response1.data.weather[0].main === "Drizzle") {
+            genresN =  9
+        } else if (response1.data.weather[0].main === "Rain") {
+          genresN =  11
+        } else if (response1.data.weather[0].main === "Snow") {
+          genresN =  14
+        } else if (response1.data.weather[0].main === "Atmosphere") {
+          genresN =  12
+        } else if (response1.data.weather[0].main === "Clear") {
+          genresN =  3
+        } else if (response1.data.weather[0].main === "Clouds") {
+          genresN =  15
+        } 
         
         const response2 = await axios({
               method:'get',

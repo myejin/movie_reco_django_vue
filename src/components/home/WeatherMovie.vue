@@ -1,17 +1,18 @@
 <template>
   <div class="carousel-position">
    <carousel
-   style="width:600px; height:60%;"
-   per-Page="4">
-    <slide     
-      v-for="movie in weatherMovie.data.movies"
-      :key="movie.id"
-      
-      >
-      <img class="img-size" :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" alt="">
-      <span>{{movie.title}}</span>
-    </slide>
-  </carousel>
+      :per-Page="4"
+      :paginationEnabled="false"
+      class="carousel-size">
+        <slide     
+          v-for="movie in weatherMovie.data.movies"
+          :key="movie.id"
+          style="margin: 0px 50px;"
+          >
+          <img class="img-size" :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" alt="">
+         
+        </slide>
+    </carousel>
   </div>
 </template>
 
@@ -33,11 +34,16 @@ export default {
 <style scoped>
 .carousel-position {
   position: absolute;
-  top:40px;
-  left: 170px;
+  top:600px;
+  left: 100px;
+}
+.carousel-size {
+  width: 1000px;
+  height:600px;
 }
 .img-size {
-  width:50%;
-  height: 2rem;
+  width:100%;
+  height: 100%;
+
 }
 </style>

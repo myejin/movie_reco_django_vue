@@ -1,17 +1,27 @@
 <template>
+  <div>
+    <span class="bg"></span>
+      <v-app id="inspire">
+        <v-container >
+          <v-row >
+          <!-- 
+            <v-col class="pt-10 my-10 pb-16">
+              <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
+            </v-col> -->
 
-<div class="bg">
-    <router-link :to="{name: 'Home'}">
-     <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
-    </router-link>
-    <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-
-    <div style="position:relative;">
-      <weather></weather>
-      <weather-movie></weather-movie>
-    </div>
-
-</div>
+            <v-col sm="0" lg="2">
+              <div style="position:relative;">
+                <img class="img-size" src="../assets/rain.jpg" alt="">
+                <weather></weather>
+                <weather-movie></weather-movie>
+              </div>
+            </v-col>
+          
+          </v-row>
+        </v-container>
+      </v-app>
+    
+  </div>
 </template>
 
 <script>
@@ -39,5 +49,14 @@ export default {
   position:absolute;
   width: 100%;
   height: 100%;
+}
+
+
+#inspire {
+  background: none;
+}
+.img-size {
+  width:1160px;
+  margin-top: 100px;
 }
 </style>
