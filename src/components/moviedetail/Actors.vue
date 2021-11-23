@@ -1,6 +1,5 @@
 <template>
   <div class="mt-16">
-    
     <div class="bg">
       <v-slide-group
         class="pa-4 mx-auto"

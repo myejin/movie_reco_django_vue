@@ -217,7 +217,6 @@ export default {
 }
 .cardTitle {
   font-size: 0.8em; 
-  text-align: center; 
   white-space: nowrap; 
   word-break: normal; 
   overflow: hidden; 

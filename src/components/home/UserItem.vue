@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h3>{{ username }}님이 본 영화</h3>
+    <h3>
+      <router-link :to="{name: 'Profile', params: { username: username }}">
+        {{ username }}
+      </router-link>
+      님이 본 영화
+    </h3> 
     <div>
       <v-row>
         <v-card
@@ -17,7 +22,7 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             >
             </v-img>
-            <v-card-title style="padding: 0;">
+            <v-card-title class="cardTitle">
               <v-spacer />
               <div class="cardTitle">{{ movie.movie_detail.title }}</div>
               <v-spacer />
@@ -55,5 +60,12 @@ export default {
 </script>
 
 <style>
-
+.cardTitle {
+  padding: 0;
+  font-size: 1em; 
+  white-space: nowrap; 
+  word-break: normal; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
 </style>

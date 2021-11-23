@@ -6,7 +6,7 @@
     <div v-else>
       <h2>{{ myName }}님과 유사한 패턴을 가진 분들</h2>
       <user-item v-for="user of similarUser"
-        :key="user.userId"
+        :key="user.user_id"
         :user="user"
       >
       </user-item>
