@@ -5,7 +5,7 @@
     class="mx-auto overflow-hidden"
   >
     <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-    <router-link :to="{ name: 'GenreMovies', params:{movieId:1} }">GenreMovies</router-link>
+    <router-link :to="{ name: 'GenreMovies', params:{genreId:1} }">GenreMovies</router-link>
     <v-app-bar
       src="./assets/main_bg.jpg"
       fixed
