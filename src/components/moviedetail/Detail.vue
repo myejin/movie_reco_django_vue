@@ -89,7 +89,7 @@ export default {
         this.posterPath = res.data['poster_path']
         this.overview = res.data['overview']
         this.genres = res.data['genres']
-        this.rank = res.data['rank_sum'] / res.data['rank_count']
+        this.rank = Math.round(res.data['rank_sum'] / res.data['rank_count'] * 10) / 10
         this.actors = res.data['actors']
       })
     }
