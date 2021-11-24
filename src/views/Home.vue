@@ -20,6 +20,7 @@
             <genre-choice></genre-choice>
           </div>
           <similar-user></similar-user>
+          <genre-movie-list></genre-movie-list>
         </v-container>
       </v-app>
     
@@ -36,6 +37,7 @@ import WeatherMovie from '../components/home/WeatherMovie.vue'
 import Weather from '../components/home/Weather.vue'
 import SimilarUser from '../components/home/SimilarUser.vue'
 import GenreChoice from '../components/home/GenreChoice.vue'
+import GenreMovieList from '../components/home/GenreMovieList.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -45,6 +47,7 @@ export default {
     Weather,
     SimilarUser,
     GenreChoice,
+    GenreMovieList,
   },
   computed: {
     ...mapState([

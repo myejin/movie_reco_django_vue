@@ -44,7 +44,6 @@ export default {
         url: `${this.$defaultUrl}/genres/${this.$route.params.genreId}/movies/`,
       })
       .then(res => {
-        console.log(res.data);
         this.genreName = res.data['genre_name']
         this.genreMovies = res.data['movies']
       })
