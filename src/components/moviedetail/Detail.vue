@@ -22,34 +22,39 @@
         <h3>줄거리</h3>
         {{ overview }}
       </div>
+
+      <div>
+        <button @click="createArticle">영화메이트 구하기</button>
+      </div>
+    
     <!-- actor -->
-    <div class="bg">
-      <v-slide-group
-        class="pa-4 mx-auto"
-        style="width:75%;"
-      >
-        <v-slide-item
-          v-for="actor in actors"
-          :key="actor.id"
-        > 
-          <v-card
-            class="ma-4"
-            height="250"
-            width="150"
-          >
-            <img width="100%" height="200" 
-              :src="'https://image.tmdb.org/t/p/original/' + actor.profile_path" 
-              :alt="actor.name"
+      <div class="bg">
+        <v-slide-group
+          class="pa-4 mx-auto"
+          style="width:75%;"
+        >
+          <v-slide-item
+            v-for="actor in actors"
+            :key="actor.id"
+          > 
+            <v-card
+              class="ma-4"
+              height="250"
+              width="150"
             >
-            <v-card-title style="padding: 0;">
-              <v-spacer />
-              <div class="actorName">{{ actor.name }}</div>
-              <v-spacer />
-            </v-card-title>
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </div>
+              <img width="100%" height="200" 
+                :src="'https://image.tmdb.org/t/p/original/' + actor.profile_path" 
+                :alt="actor.name"
+              >
+              <v-card-title style="padding: 0;">
+                <v-spacer />
+                <div class="actorName">{{ actor.name }}</div>
+                <v-spacer />
+              </v-card-title>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+      </div>
   </div>
 </template>
 
@@ -97,7 +102,37 @@ export default {
         this.rank = Math.round(res.data['rank_sum'] / res.data['rank_count'] * 10) / 10
         this.actors = res.data['actors']
       })
-    }
+    },
+    createArticle: function () {
+      const pos = this.getPosition()
+      if (pos !== 'err') {
+        axios({
+          method: 'post',
+          url: `${this.$defaultUrl}/articles/`,  
+          headers: this.setHeader(),
+          data: {
+            'movie_pk': this.$route.params.movieId,
+            'latitude': pos.latitude,
+            'longitude': pos.longitude
+          }
+        })
+        .then(() => {
+          alert('메이트 모집글이 등록되었어요.')
+          this.$router.push({name:'Community'})
+        })
+      }
+    },
+    getPosition: function () {
+      if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => position.coords, err => {
+          alert(`위치정보를 받아오는 데 에러가 발생합니다.\n${err}`)
+          return 'err'
+        })
+      } else {
+        alert('위치정보를 사용할 수 없습니다.')
+        return 'err'
+      }
+    },
   },
   created: function () {
     this.getMovie()

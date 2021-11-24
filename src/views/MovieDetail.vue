@@ -19,7 +19,6 @@
           
           </v-row>
         </v-container>
-        <!-- <actors></actors> -->
       </v-app>
 
   </div>
@@ -29,6 +28,7 @@
 import Detail from '@/components/moviedetail/Detail'
 
 // import Actors from '@/components/moviedetail/Actors'
+
 
 export default {
   name:'MovieDetail',
