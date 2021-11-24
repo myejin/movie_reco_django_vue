@@ -1,12 +1,55 @@
 <template>
-  <tbody @click="showDetail">
-    <td class="text-center" @click="goMovie">{{ username }}</td>
-    <td class="text-center" @click="goProfile">{{ movie.title }}</td>
-    <td class="text-center"><button class="btn" @click="goChat">채팅하기</button></td>
-    <td class="text-center" v-if="show">{{ created_at }}</td>
-    <td class="text-center" v-if="show">{{ address }}</td>
-    <td v-if="show && isMyArticle"><button class="btn" @click="finishToggle">{{btnValue}}</button></td>
-  </tbody>
+  <div>
+    <div>
+      <a @click="goProfile" class="a-align" style="width:20%; color: black;">{{ username }}</a>
+      <a @click="goMovie" class="a-align" style="width:40%; color: black;">{{ movie.title }}</a>
+      <a class="a-align" style="width:10%; color: black;"><span @click="showDetail">detail</span></a>
+      <a class="a-align" style="width:10%; color: black;" v-if="!isMyArticle"><span @click="goChat">chat</span></a>
+    </div>
+    <div v-if="show" style="border: 1px solid; margin: 1rem; padding: 1rem; width:80%;">
+        <div style = "display: flex; justify-content:flex-end">
+          <v-btn x-small @click="showDetail">X</v-btn>
+        </div>
+        <div>
+          <span>게시일자 : {{ created_at }}</span><br>
+          <span>상세주소 : {{ address }}</span><br>
+          <span>모집여부 : {{ btnValue }}</span>
+          <v-btn x-small
+            v-if="isMyArticle" 
+            @click="finishToggle"
+            style="margin: 0.5rem;"
+          >
+            변경
+          </v-btn>
+        </div>
+        <br>
+        <div>
+          <input type="text" 
+            v-model.trim="inputData" 
+            placeholder="리뷰를 등록하세요"
+            style="border: 2px solid; width: 85%"
+            @keyup.enter="addReview"
+          >
+          <v-btn small @click="addReview" style="margin: 0.1rem;">작성</v-btn>
+        </div>
+        <br>
+        <div v-if="reviews.length">
+          <h4>리뷰 {{ reviews.length }}개</h4>
+          <div v-for="(review, idx) of reverseReviews"
+            :key="idx"
+          >
+            {{ review.author.username }}: {{ review.content }}
+            (created at : {{ created_at }})
+            <v-btn small 
+              @click="delReview(review)"
+              v-if="review.author.username === myName"
+            >
+            삭제
+            </v-btn>
+          </div>
+        </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -26,6 +69,8 @@ export default {
       isFinish: undefined,
       btnValue: '',
       show: false,
+      reviews: [],
+      inputData: '',
     }
   },
   methods: {
@@ -45,20 +90,20 @@ export default {
         method: 'put',
         url: `${this.$defaultUrl}/articles/${this.article['id']}/`,  
         headers: this.setHeader(),
-        data: {
-          'is_finished': this.isFinish
-        }
+        // data: {
+        //   'is_finished': this.isFinish
+        // }
       })
       .then(() => {
         if (this.isFinish) {
-          this.btnValue = '다시 구하기'
+          this.btnValue = '완료'
         } else {
-          this.btnValue = '구했다'
+          this.btnValue = '모집중'
         }
       })
     },
     goProfile: function () {
-      // this.$router.push({ name: 'Profile', params: { username: this.username } })
+      this.$router.push({ name: 'Profile', params: { username: this.username } })
     },
     goMovie: function () {
       this.$router.push({ name:'MovieDetail', params: { movieId: this.movie['id'] } })
@@ -84,17 +129,63 @@ export default {
       this.show = !this.show
       this.getAddress()
       this.$emit('show-toggle')
+    },
+    getReview: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/articles/${this.article.id}/reviews/`,  
+        headers: this.setHeader()
+      })
+      .then(res => {
+        this.reviews = res.data['reviews']
+      })
+    },
+    addReview: function () {
+      if (this.inputData.length) {
+        axios({
+          method: 'post',
+          url: `${this.$defaultUrl}/articles/${this.article.id}/reviews/`,  
+          headers: this.setHeader(),
+          data: {
+            'content': this.inputData,
+          }
+        })
+        .then(res => {
+          console.log(res.data);
+          this.reviews.push(res.data['review'])
+          this.inputData = ''
+        })
+      }
+    },
+    delReview: function (review) {
+      axios({
+        method: 'delete',
+        url: `${this.$defaultUrl}/articles/reviews/${review.id}/`,  
+        headers: this.setHeader(),
+      })
+      .then(() => {
+        this.reviews.pop(review)
+      })
     }
   },
   computed: {
+    myName: function () {
+      if ('myName' in localStorage) {
+        return localStorage.getItem('myName')
+      } else {
+        return ''
+      }
+    },
     isMyArticle: function () {
-      const myName = localStorage.getItem('myName')
-      if (myName === this.username) {
+      if (this.myName === this.username) {
         return true 
       } else {
         return false 
       }
     },
+    reverseReviews: function () {
+      return [...this.reviews].reverse()
+    }
   },
   created: function () {
     this.username = this.article['author']['username']
@@ -102,10 +193,11 @@ export default {
     this.created_at = this.article['created_at']
     this.isFinish = this.article['is_finished']
     if (this.isFinish) {
-      this.btnValue = '다시 구하기'
+      this.btnValue = '완료'
     } else {
-      this.btnValue = '구했다'
+      this.btnValue = '진행중'
     }
+    this.getReview()
   },
   mounted: function () {
     const script = document.createElement('script')
@@ -114,12 +206,18 @@ export default {
     script.type = "text/javascript"
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.VUE_APP_KAKAO_API_KEY}&libraries=services&autoload=false`
     document.head.appendChild(script)
+    this.getAddress()
   },
 }
 </script>
 
 <style>
-.btn {
-  border: solid 1px;
+.a-align {
+  text-decoration: none; 
+  display:inline-block; 
+  text-align: center; 
+}
+a:hover {
+  text-decoration: underline; 
 }
 </style>

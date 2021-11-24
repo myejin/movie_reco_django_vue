@@ -1,27 +1,25 @@
 <template>
-  <v-app id="inspire">
-    <div class="posting-container">
-      <h2>영화 같이 볼까요?</h2>
-      <p>{{ myName }}님과 가까운 분의 모집글부터 노출됩니다.</p>
-      <div class="inner-container">
-        <v-simple-table>
-          <tr>
-            <th>username</th>
-            <th>movie</th>
-            <th>go chat </th>
-            <th v-if="show">created_at</th>
-            <th v-if="show">address</th>
-          </tr>
-          <Article v-for="article of sortedArticles"
-            :key="article.id"
-            :article="article"
-            @show-toggle="showToggle"
-          >
-          </Article>
-        </v-simple-table>
-    </div>
-    </div>
-  </v-app>
+  <div>
+    <span class="bg"></span>
+    <v-app id="inspire">
+      <v-container>
+        <h2>영화 같이 볼까요?</h2>
+        <p>{{ myName }}님과 가까운 분의 모집글부터 노출됩니다.</p>
+        <div style="background: none;">
+            <div style="border-bottom: thin solid; width:80%;">
+              <span style="display:inline-block; width:25%; text-align: center;">username</span>
+              <span style="display:inline-block; width:50%; text-align: center;">movie</span>
+            </div>
+            <Article v-for="article of sortedArticles"
+              :key="article.id"
+              :article="article"
+              @show-toggle="showToggle"
+            >
+            </Article>
+        </div>
+      </v-container>
+    </v-app>
+  </div>
 </template>
 <script>
 import Article from '@/components/article/Article.vue'
@@ -133,7 +131,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 #inspire {
   background: none;
 }
