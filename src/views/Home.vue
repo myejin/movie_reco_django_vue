@@ -25,11 +25,6 @@
           <genre-movie-list></genre-movie-list>
         </v-container>
       </v-app>
-    
-    <router-link :to="{name: 'Home'}">
-     <img width="100" class="img-size" src="@/assets/Logo.png" alt="">
-    </router-link>
-    <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
   </div>
 </template>
 
