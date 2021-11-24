@@ -11,7 +11,7 @@
       <!-- 혜진추가 -->
       <h4 class="my-4">내 평점:</h4>
       <rate></rate>
-      <wish></wish>
+      <wish :title="title"></wish>
 
       <h2 class="my-4">총 평점 : {{ rank }}</h2>
       <div>
@@ -94,7 +94,6 @@ export default {
         headers: this.setHeader()
       })
       .then(res => {
-        console.log( res.data['actors']);
         this.title = res.data['title']
         this.posterPath = res.data['poster_path']
         this.overview = res.data['overview']
