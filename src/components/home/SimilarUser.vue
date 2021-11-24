@@ -47,9 +47,6 @@ export default {
         this.similarUser = res.data['users']
         this.userCount = res.data['count']
       })
-      // .catch(err => {
-      //   console.log(err);
-      // })
     }
   },
   computed: {
