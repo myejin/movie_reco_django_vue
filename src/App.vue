@@ -70,6 +70,15 @@
 
             <v-list-item>
               <v-list-item-icon>
+                <v-icon>mdi-chat</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link :to="{name: 'ChatRooms' }">Chat</router-link>
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-icon>
                 <v-icon>mdi-filmstrip</v-icon>
               </v-list-item-icon>
               <v-list-item-title>

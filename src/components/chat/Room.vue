@@ -1,14 +1,27 @@
 <template>
-  <div style="margin: 1rem">
-    <div class="messages">
-      <message v-for="(data, idx) in chatLog" 
-        :key="idx"
-        :data="data"
-      >
-      </message>
-    </div>
-    <input class="input" @keyup.enter="sendMessage" v-model.trim="inputData" type="text">
-    <button class="btn" @click="sendMessage">Send</button>
+  <div>
+    <span class="bg"></span>
+    <v-app id="inspire">
+      <v-container class="justify-center">
+        <h2>{{ toUsername }}</h2>
+        <div class="messages">
+          <message v-for="(data, idx) in chatLog" 
+            :key="idx"
+            :data="data"
+          >
+          </message>
+        </div>
+        <div class="d-flex">
+          <v-text-field
+            label=""
+            filled
+            @keyup.enter="sendMessage"
+            v-model.trim="inputData"
+          ></v-text-field>
+          <v-btn x-large @click="sendMessage" style="margin: 0.2rem;">SEND</v-btn>
+        </div>
+      </v-container>
+    </v-app>
   </div>
 </template>
 
@@ -122,18 +135,18 @@ export default {
 </script>
 
 <style>
+#inspire {
+  background: none;
+}
 .input {
   border: solid;
   width: 450px; 
   margin: 0.3rem 0;
 }
-.btn {
-  border: solid;
-  width: 50px
-}
 .messages {
-  width: 500px;
-  height: 400px;
+  background-color: white;
+  height: 450px;
+  padding: 1rem;
   overflow: scroll;
 }
 </style>

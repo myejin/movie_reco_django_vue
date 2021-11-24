@@ -8,6 +8,7 @@ import GenreMovies from '../views/GenreMovies.vue'
 import Chat from '../views/Chat.vue'
 import Community from '../views/Community.vue'
 import Profile from '../views/Profile.vue'
+import ChatRooms from '../views/ChatRooms.vue'
 
 
 Vue.use(VueRouter)
@@ -53,6 +54,11 @@ const routes = [
     path:'/chat/:username',
     name:'Chat',
     component: Chat
+  },
+  {
+    path:'/chatrooms',
+    name:'ChatRooms',
+    component: ChatRooms
   }
 ]
 
