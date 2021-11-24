@@ -8,12 +8,12 @@
         <div class="title-style ">{{ title }}</div>
         <img width="80%" src="@/assets/detail_title.png" alt="">
       </div>
-      <!-- 혜진추가 -->
-      <h4 class="my-4">내 평점:</h4>
-      <rate></rate>
+
+      <rate
+        :rank="rank"
+      ></rate>
       <wish :title="title"></wish>
 
-      <h2 class="my-4">총 평점 : {{ rank }}</h2>
       <div>
         <h3>장르</h3>
         <span v-for="genre of genres" :key="genre.id">{{ genre.name }}&nbsp;</span>
