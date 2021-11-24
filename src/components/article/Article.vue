@@ -1,18 +1,12 @@
 <template>
-  <div>
-    <button @click="getAddress">나와라</button>
-    <div v-if="isMyArticle">
-      <button class="btn" @click="goMovie">{{ movie.title }}</button> | 
-      {{ created_at }} |
-      <button class="btn" @click="finishToggle">{{btnValue}}</button>
-    </div>
-    <div v-else-if="!isFinish">
-      <button class="btn" @click="goProfile">{{ username }}</button> |
-      <button class="btn" @click="goMovie">{{ movie.title }}</button> | 
-      {{ distance }} | {{ address }} | {{ created_at }} 
-      <button class="btn" @click="goChat">채팅하기</button>
-    </div>
-  </div>
+  <tbody @click="showDetail">
+    <td class="text-center" @click="goMovie">{{ username }}</td>
+    <td class="text-center" @click="goProfile">{{ movie.title }}</td>
+    <td class="text-center"><button class="btn" @click="goChat">채팅하기</button></td>
+    <td class="text-center" v-if="show">{{ created_at }}</td>
+    <td class="text-center" v-if="show">{{ address }}</td>
+    <td v-if="show && isMyArticle"><button class="btn" @click="finishToggle">{{btnValue}}</button></td>
+  </tbody>
 </template>
 
 <script>
@@ -27,14 +21,17 @@ export default {
     return {
       username: '',
       movie: {},
-      distance: 0,
       address: '',
       created_at: '',
       isFinish: undefined,
       btnValue: '',
+      show: false,
     }
   },
   methods: {
+    initMap: function () {
+      console.log(window.kakao.maps.services)
+    },
     setHeader: function () {
       const token = localStorage.getItem('jwt')
       const header = {
@@ -70,15 +67,23 @@ export default {
       this.$router.push({ name: 'Chat', params: { username: this.username } })
     },
     getAddress: function () {
-      const geocoder = new kakao.maps.services.Geocoder()
-      // const coord = new kakao.maps.LatLng(this.article['latitude'], this.article['longitude'])
-      const callback = function(res, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          alert(res)
-          console.log(res);
+      if (!this.address.length) {
+        const geocoder = new kakao.maps.services.Geocoder()
+        const callback = (res, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            this.address = res[0]['address_name']
+            console.log(this.address);
+          } else {
+            console.log('실패');
+          }
         }
+        geocoder.coord2RegionCode(this.article['longitude'], this.article['latitude'], callback)
       }
-      geocoder.coord2RegionCode(this.article['latitude'], this.article['longitude'], callback)
+    },
+    showDetail: function () {
+      this.show = !this.show
+      this.getAddress()
+      this.$emit('show-toggle')
     }
   },
   computed: {
@@ -94,7 +99,6 @@ export default {
   created: function () {
     this.username = this.article['author']['username']
     this.movie = this.article['movie']
-    this.distance = this.article['dist']
     this.created_at = this.article['created_at']
     this.isFinish = this.article['is_finished']
     if (this.isFinish) {
@@ -106,10 +110,11 @@ export default {
   mounted: function () {
     const script = document.createElement('script')
     /* global kakao */
+    script.onload = () => kakao.maps.load(this.initMap)
     script.type = "text/javascript"
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.VUE_APP_KAKAO_API_KEY}&libraries=services&autoload=false`
     document.head.appendChild(script)
-  }
+  },
 }
 </script>
 
