@@ -28,12 +28,15 @@
             <v-col>
               <h3>좋아하는 장르</h3>
               <div v-if="profile.likeGenres.length">
-                <span v-for="genre of profile.likeGenres" :key="genre.id">
-                  <!-- <router-link :to="{name: 'MovieDetail', params: { genreId: genre.id }}"> -->
-                    {{ genre.name }}
-                  <!-- </router-link> -->
-                  &nbsp;
-                </span>
+                <v-chip
+                  v-for="genre of profile.likeGenres"
+                  :key="genre.id"
+                  @click="addLikeGenres(genre.id)"
+                >
+                  <router-link :to="{name: 'GenreMovies', params: { genreId: genre.id }}">
+                  <span style="color: black;">{{ genre.name }}</span>
+                  </router-link>
+                </v-chip>
               </div>
               <div v-else>특별히 없어요.</div>
             </v-col>
@@ -41,7 +44,7 @@
           </v-row>
           <div v-else>
             <genre-choice></genre-choice>
-            <v-btn @click="genreToggle" color="accent" style="margin: 0.1rem;">취소</v-btn>
+            <v-btn @click="genreToggle" color="grey" style="margin: 0.1rem; color: white;">취소</v-btn>
           </div>
         </div>
         <div class="m-2">

@@ -1,34 +1,69 @@
 <template>
   <div>
-    <p class="genre-font">{{genreMovies.genre_name}}</p>
-    <div class="moviecards">
-      <movie-card
-        v-for="movie in genreMovies.movies"
-        :key="movie.id"
-        :movie="movie"
-      ></movie-card>
-    </div>
+    <span class="bg"></span>
+    <v-app id="inspire">
+      <!-- <v-container > -->
+      <p class="genre-font" style="margin: 1rem;">{{ genreName }}</p>
+      <div class="moviecards">
+        <movie-card
+          v-for="movie in genreMovies"
+          :key="movie.id"
+          :id="movie.id"
+          :title="movie.title"
+          :posterPath="movie.poster_path"
+        ></movie-card>
+      </div>
+      <!-- </v-container> -->
+    </v-app>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import MovieCard from '@/components/genremovies/MovieCard'
+import axios from 'axios'
+
 export default {
   name:'GenreMovies',
   components:{
     MovieCard
   },
-  created: function() {
-    this.$store.dispatch('LoadGenreMovies')
+  data: function () {
+    return {
+      genreName: '',
+      genreMovies: [],
+    }
   },
-  computed: {
-    ...mapState(['genreMovies'])
+  methods: {
+    LoadGenreMovies: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/genres/1/movies/`,
+      })
+      .then(res => {
+        console.log(res.data);
+        this.genreName = res.data['genre_name']
+        this.genreMovies = res.data['movies']
+      })
+    } 
+  },
+  created: function() {
+    this.LoadGenreMovies()
   }
 }
 </script>
 
 <style scoped>
+.bg {
+  background-image: url('../assets/main_bg.jpg');
+  background-size : 100%;
+  background-repeat: repeat;
+  position:absolute;
+  width: 100%;
+  height: 100%;
+}
+#inspire {
+  background: none;
+}
 .moviecards {
   display:flex; 
   justify-content:center;

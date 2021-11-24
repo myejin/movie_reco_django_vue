@@ -24,9 +24,6 @@ export default new Vuex.Store({
     LOAD_WEATHER_MOVIE:function(state, res){
       state.weatherMovie = res
     },
-    LOAD_GENRE_MOVIES:function(state,res) {
-      state.genreMovies = res
-    },
     SET_PROFILE: function (state, res) {
       state.profile.likeGenres = res['like_genres']
       state.profile.rateMovies = res['rate_movies']
@@ -72,15 +69,6 @@ export default new Vuex.Store({
             })
         console.log(response2, "???????")
         commit('LOAD_WEATHER_MOVIE', response2.data.movies)
-    },
-    LoadGenreMovies: function ({commit}) {
-      axios({
-        method: 'get',
-        url: 'http://127.0.0.1:8000/genres/1/movies/',
-      })
-      .then(res => {
-        commit('LOAD_GENRE_MOVIES', res.data)
-      })
     },
     setProfile: function (context, data) {
       context.commit('SET_PROFILE', data)
