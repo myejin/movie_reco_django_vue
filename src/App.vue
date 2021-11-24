@@ -4,8 +4,7 @@
   <v-card
     class="mx-auto overflow-hidden"
   >
-    <router-link :to="{ name: 'MovieDetail', params: { movieId: 1} }">detail</router-link>
-    <router-link :to="{ name: 'GenreMovies', params:{genreId:1} }">GenreMovies</router-link>
+
     <v-app-bar
       src="./assets/main_bg.jpg"
       fixed
@@ -13,12 +12,12 @@
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar-title><router-link :to="{name: 'Home'}">Home</router-link></v-toolbar-title>
     </v-app-bar>
     <router-view/>
     <v-navigation-drawer
       v-model="drawer"
-      absolute
+      fixed
       temporary
     >
       <v-list
@@ -32,7 +31,7 @@
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
               <router-link :to="{name: 'Home'}">Home</router-link>
@@ -71,6 +70,15 @@
 
             <v-list-item>
               <v-list-item-icon>
+                <v-icon>mdi-filmstrip</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                <router-link :to="{name: 'GenreMovies', params:{genreId:1}}">Movie List</router-link>
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-icon>
                 <v-icon>mdi-account-multiple</v-icon>
               </v-list-item-icon>
               <v-list-item-title>
@@ -80,7 +88,7 @@
 
             <v-list-item>
               <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
+                <v-icon block>mdi-logout</v-icon>
               </v-list-item-icon>
               <v-list-item-title>
                 <router-link @click.native="logout" to="#">
@@ -109,8 +117,7 @@ export default {
     logout: function () {
       localStorage.removeItem('jwt')
       localStorage.removeItem('myName')
-      this.$router.go() 
-      // this.$router.push({ name: 'Home'})
+      this.$router.push({name:'Login'})
     }
   },
   computed: {
