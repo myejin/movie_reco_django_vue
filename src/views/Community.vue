@@ -115,8 +115,12 @@ export default {
     }
   },
   created: function () {
-    this.getArticles()
-    this.getPosition()
+    if ('jwt' in localStorage) {
+      this.getArticles()
+      this.getPosition()
+    } else {
+      this.$router.push({ name: 'Home'})
+    }
   }
 }
 

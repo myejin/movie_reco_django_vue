@@ -214,8 +214,12 @@ export default {
     }
   },
   created: function () {
-    this.getProfile()
-    this.getFollowInfo()
+    if ('jwt' in localStorage) {
+      this.getProfile()
+      this.getFollowInfo()
+    } else {
+      this.$router.push({ name: 'Home'})
+    }
   }
 }
 

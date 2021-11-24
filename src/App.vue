@@ -109,7 +109,8 @@ export default {
     logout: function () {
       localStorage.removeItem('jwt')
       localStorage.removeItem('myName')
-      this.$router.push({name:'Login'})
+      this.$router.go() 
+      // this.$router.push({ name: 'Home'})
     }
   },
   computed: {

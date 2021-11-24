@@ -27,15 +27,15 @@
 <script>
 import Detail from '@/components/moviedetail/Detail'
 
-// import Actors from '@/components/moviedetail/Actors'
-
-
 export default {
   name:'MovieDetail',
   components: {
     Detail,
-    // Actors,
- 
+  },
+  created: function () {
+    if (!('jwt' in localStorage)) {
+      this.$router.push({ name: 'Home'})
+    }
   }
 }
 </script>

@@ -68,11 +68,13 @@ export default {
       .then(res => {
         localStorage.setItem('jwt',res.data.access)
         localStorage.setItem('myName', this.credentials.username)
-        this.$router.push({name:'Home'})
+        this.$router.go()
       })
-      .catch(err => {
-        console.log(err);
-      })
+    }
+  },
+  created: function () {
+    if ('jwt' in localStorage) {
+        this.$router.push({ name: 'Home' })
     }
   }
 }

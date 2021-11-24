@@ -50,8 +50,12 @@ export default {
       })
     } 
   },
-  created: function() {
-    this.LoadGenreMovies()
+  created: function () {
+    if ('jwt' in localStorage) {
+      this.LoadGenreMovies()
+    } else {
+      this.$router.push({ name: 'Home'})
+    }
   }
 }
 </script>

@@ -13,6 +13,11 @@ export default {
   name:'Chat',
   components: {
     Room,
+  },
+  created: function () {
+    if (!('jwt' in localStorage)) {
+      this.$router.push({ name: 'Home'})
+    }
   }
 }
 
