@@ -52,7 +52,7 @@ def article_list_create(request):
     method="put",
     operation_description="해당 게시물의 마감 여부를 변경합니다.",
     manual_parameters=[token_param],
-    request_body=ArticleUpdateSerializer,
+    # request_body=ArticleUpdateSerializer,
     responses=article_res_schema(200),
 )
 @swagger_auto_schema(
@@ -68,10 +68,10 @@ def article_update_delete(request, article_pk):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def article_update(request):
-        serializer = ArticleSerializer(article, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        article.is_finished = not article.is_finished
+        article.save() 
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
 
     def article_delete():
         article.delete()
@@ -97,7 +97,7 @@ def article_update_delete(request, article_pk):
     operation_description="특정 게시물의 새로운 리뷰를 생성합니다.",
     manual_parameters=[token_param],
     request_body=ReviewBodySerializer,
-    responses=review_res_schema(201),
+    # responses=review_res_schema(201),
 )
 @api_view(["GET", "POST"])
 def review_list_create(request, article_pk):
