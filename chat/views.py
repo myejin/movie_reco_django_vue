@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -86,4 +87,26 @@ def send_message(request, username):
         )
         serializer = MsgSimpleSerializer(msg)
         return Response(serializer.data, status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+def my_room_list(request):
+    if request.user.is_authenticated:
+        rooms = Message.objects.filter(Q(from_user=request.user) | Q(to_user=request.user)).values("room")
+        room_ids = set()
+        for room in rooms:
+            if room['room'] not in room_ids:
+                room_ids.add(room['room'])
+
+        data = {"rooms": []}
+        for id in room_ids:
+            room = get_object_or_404(ChatRoom, pk=id)
+            a, b = room.name.split('_')
+            if request.user.pk == int(a):
+                you = get_object_or_404(get_user_model(), pk=int(b))
+            else:
+                you = get_object_or_404(get_user_model(), pk=int(a))
+            data["rooms"].append({ 'username': you.username, 'roomname': room.name})
+        return Response(data)
     return Response(status=status.HTTP_401_UNAUTHORIZED)

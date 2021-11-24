@@ -54,11 +54,16 @@ def rate(request, movie_pk):
             movie_rank = get_object_or_404(MovieRank, user=request.user, movie=movie)
             tmp = movie_rank.rank
             movie_rank.delete()
+
+            movie.rank_count -= 1
+            movie.rank_sum -= tmp
+            movie.save()
+
             data = {
                 'status_code': 204,
                 'message': 'NO_CONTENT',
-                "rank_count": movie.rank_count - 1,
-                "rank_sum": movie.rank_sum - tmp,
+                "rank_count": movie.rank_count,
+                "rank_sum": movie.rank_sum,
             }
             return Response(data)
         else:
@@ -94,4 +99,20 @@ def detail(request, movie_pk):
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
-    
+
+
+@api_view(["GET"])
+def search(request, movie_title):
+    if request.user.is_authenticated:
+        movie = Movie.objects.filter(title=movie_title)
+        if movie:
+            movie = movie[0]
+            serializer = MovieSerializer(movie)
+            return Response(serializer.data)
+        else:
+            data = {
+                "status_code": 404,
+                "message": "NOT_FOUND",
+            }
+            return Response(data)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
