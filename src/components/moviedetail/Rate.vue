@@ -12,7 +12,7 @@
       <v-btn large class="ms-5 " @click="selectRate">sub</v-btn>
       <v-btn large class="ms-3 " @click="deleteRate">del</v-btn>
     </div>
-    <h2>총 평점 : {{ rank }}</h2>
+    <h2>총 평점 : {{ myRank }}</h2>
   </div>
 </template>
 
@@ -40,6 +40,16 @@ export default {
       }
       return header 
     },
+    getProfile: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/accounts/${this.myName}/profile/`,  
+        headers: this.setHeader()
+      })
+      .then(res => {
+        this.$store.dispatch("setProfile", res.data)
+      })
+    },
     selectRate:function () {
       axios({
         method:'post',
@@ -48,7 +58,6 @@ export default {
         headers: this.setHeader(),
       })
       .then(res => {
-        console.log(res.data);
         this.rankCount = res.data.rank_count
         this.rankSum = res.data.rank_sum
         this.rank = Math.round(this.rankSum / this.rankCount * 10) / 10
@@ -74,6 +83,15 @@ export default {
       })
     }
   },
+  computed: {
+    myRank: function () {
+      if (isNaN(this.rank)) {
+        return 0
+      } else {
+        return this.rank 
+      }
+    }
+  }
 }
 </script>
 

@@ -13,12 +13,6 @@ export default {
   props: {
     title: String,
   },
-  data: function () {
-    return {
-      btnValue: '',
-      state: false,
-    }
-  },
   methods:{
     setHeader: function () {
       const token = localStorage.getItem('jwt')
@@ -27,41 +21,50 @@ export default {
       }
       return header 
     },
+    getProfile: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/accounts/${this.myName}/profile/`,  
+        headers: this.setHeader()
+      })
+      .then(res => {
+        this.$store.dispatch("setProfile", res.data)
+      })
+    },
     addWishList: function() {
       axios({
         method:'post',
         url:`${this.$defaultUrl}/movies/${this.$route.params.movieId}/wish/`,
         headers: this.setHeader()
-     })
-     .then(() =>{
-       this.state = !this.state
-        if (this.state === true) {
-          this.btnValue = 'nowish'
-          alert('위시리스트에서 추가되었어요.')
+      })
+      .then(() => {
+        if (this.btnValue === 'addwish') {
+          alert('위시리스트에 추가되었어요.')
         } else {
-          this.btnValue = 'addwish'
-          alert('위시리스트에 삭제되었어요.')
+          alert('위시리스트에서 삭제되었어요.')
         }
-     })
+        this.$router.go()
+      })
     }
   },
   computed: {
     ...mapState([
       'profile',
     ]),
+    myName: function () {
+      return localStorage.getItem('myName')
+    },
+    btnValue: function () {
+      for (let movie of this.profile.wishMovies) {
+        if (movie['title'] === this.title) {
+          return 'nowish'
+        }
+      }
+      return 'addwish'
+    }
   },
   created: function () {
-    for (let movie of this.profile.wishMovies) {
-      if (movie['title'] === this.title) {
-        this.state = true
-        break 
-      }
-    }
-    if (this.state === true) {
-      this.btnValue = 'nowish'
-    } else {
-      this.btnValue = 'addwish'
-    }
+    this.getProfile()
   }
 }
 </script>

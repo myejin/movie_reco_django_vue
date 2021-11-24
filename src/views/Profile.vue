@@ -66,13 +66,32 @@
           <h3>평점을 매긴 영화</h3>
           <div v-if="profile.rateMovies.length" style="margin: 1rem 0;">
             <v-row>
-              <movie-card v-for="data of profile.rateMovies"
+              <v-card v-for="data of profile.rateMovies"
                 :key="data.movie.id"
-                :id="data.movie.id"
-                :title="data.movie.title"
-                :posterPath="data.movie.poster_path"
-                style="margin: 0.2rem;"
-              ></movie-card>
+                class="mx-1 my-1"
+                max-width="344"
+                @click="goDetail(data.movie.id)"
+              >
+                <v-img
+                  :src="`https://image.tmdb.org/t/p/original${data.movie.poster_path}`"
+                  height="200px"
+                >
+                  <v-card-text style="color: white; position: absolute; bottom: 0; left: 0;">{{ data.rank }}</v-card-text>
+                </v-img>
+
+                <v-card-title class="cardTitle">
+                  {{data.movie.title}}
+                </v-card-title>
+
+                <v-card-actions>
+                  <v-btn
+                    color="orange lighten-2"
+                    text
+                  >
+                    DETAIL
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
             </v-row>
           </div>
           <div v-else>아직 없어요.</div>
@@ -109,6 +128,9 @@ export default {
     }
   },
   methods: {
+    goDetail: function (movieId) {
+        this.$router.push({name: 'MovieDetail', params: { movieId: movieId }})
+    },
     setHeader: function () {
       const token = localStorage.getItem('jwt')
       const header = {
@@ -216,7 +238,8 @@ export default {
   margin: 2rem 0 0 2rem;
 }
 .cardTitle {
-  font-size: 0.8em; 
+  padding: 1rem;
+  font-size: 25px;
   white-space: nowrap; 
   word-break: normal; 
   overflow: hidden; 

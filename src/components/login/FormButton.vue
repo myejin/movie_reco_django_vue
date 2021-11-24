@@ -69,8 +69,26 @@ export default {
         localStorage.setItem('jwt',res.data.access)
         localStorage.setItem('myName', this.credentials.username)
         this.$router.go()
+        // this.getProfile()
       })
-    }
+    },
+    setHeader: function () {
+      const token = localStorage.getItem('jwt')
+      const header = {
+        Authorization: `JWT ${token}`
+      }
+      return header 
+    },
+    getProfile: function () {
+      axios({
+        method: 'get',
+        url: `${this.$defaultUrl}/accounts/${this.myName}/profile/`,  
+        headers: this.setHeader()
+      })
+      .then(res => {
+        this.$store.dispatch("setProfile", res.data)
+      })
+    },
   },
   created: function () {
     if ('jwt' in localStorage) {
