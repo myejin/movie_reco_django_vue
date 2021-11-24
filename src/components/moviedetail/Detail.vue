@@ -16,7 +16,10 @@
 
       <div>
         <h3>장르</h3>
-        <span v-for="genre of genres" :key="genre.id">{{ genre.name }}&nbsp;</span>
+        <span v-for="genre of genres" :key="genre.id">
+          <a @click="goGenreMovies(genre.id)" style="color: black">{{ genre.name }}</a>
+          &nbsp;
+        </span>
       </div>
       <div style="margin: 50px 200px" >
         <h3>줄거리</h3>
@@ -132,6 +135,9 @@ export default {
         alert('위치정보를 사용할 수 없습니다.')
       }
     },
+    goGenreMovies: function (genreId) {
+      this.$router.push({ name: 'GenreMovies', params: { genreId: genreId }})
+    }
   },
   created: function () {
     this.getMovie()
