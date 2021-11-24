@@ -1,19 +1,14 @@
 <template>
-  <div>
-    <v-container
-    class="px-0"
-    fluid
-  >
-    <v-radio-group v-model="radioGroup">
-      <v-radio
-        v-for="n in 5"
-        :key="n"
-        :label="`${n}`"
-        :value="n"
-      ></v-radio>
-      <v-btn @click="selectRate">sub</v-btn>
-    </v-radio-group>
-  </v-container>
+  <div style="display:flex; justify-content:center; margin:0px 400px">
+    <v-select
+      style="width:20%"
+      :items="items"
+      v-model="rankNum"
+      label="rate"
+      solo
+    ></v-select>
+      <v-btn large class="ms-5 " @click="selectRate">sub</v-btn>
+      <v-btn large class="ms-3 " @click="deleteRate">del</v-btn>
 
   </div>
 </template>
@@ -25,9 +20,10 @@ export default {
   name:'Rate',
   data () {
       return {
-        radioGroup: 1,
-        rankCount:null,
-        rankSum:null
+        items: [1, 2, 3, 4, 5],
+        rankNum:0,
+        rankCount:'',
+        rankSum:''
       }
     },
   methods: {
@@ -42,7 +38,7 @@ export default {
       axios({
         method:'post',
         url:`${this.$defaultUrl}/movies/${this.$route.params.movieId}/rate/`,
-        data:{"rank": this.radioGroup},
+        data:{"rank": this.rankNum},
         headers: this.setHeader(),
       })
       .then(res => {
@@ -51,6 +47,19 @@ export default {
         this.rankSum= res.rank_sum
       })
       .catch(err=>{
+        console.log(err)
+      })
+    },
+    deleteRate:function () {
+      axios({
+        method:'delete',
+        url:`${this.$defaultUrl}/movies/${this.$route.params.movieId}/rate/`,
+        headers: this.setHeader(),
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err =>{
         console.log(err)
       })
     }

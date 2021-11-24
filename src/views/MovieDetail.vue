@@ -2,18 +2,18 @@
   <div>
     <span class="bg"></span>
       <v-app id="inspire">
-        <v-container >
-          <v-row justify="space-between">
+        <v-container class="mt-10" >
+          <v-row>
             
             <v-col sm="0" lg="2" >
               <v-img  src="@/assets/전통무늬1.png" alt=""></v-img>
             </v-col>
 
-            <v-col class="pt-10 my-10 pb-16">
+            <v-col>
               <detail></detail>
             </v-col>
 
-            <v-col sm="0" lg="2"  align-self="end">
+            <v-col sm="0" lg="2" >
               <v-img  src="@/assets/전통무늬2.png" alt=""></v-img>
             </v-col>
           
@@ -21,13 +21,13 @@
         </v-container>
         <!-- <actors></actors> -->
       </v-app>
-      <rate></rate>
+
   </div>
 </template>
 
 <script>
 import Detail from '@/components/moviedetail/Detail'
-import Rate from '@/components/moviedetail/Rate'
+
 // import Actors from '@/components/moviedetail/Actors'
 
 export default {
@@ -35,7 +35,7 @@ export default {
   components: {
     Detail,
     // Actors,
-    Rate
+ 
   }
 }
 </script>

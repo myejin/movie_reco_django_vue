@@ -2,14 +2,35 @@
   <span>
     <span v-if="finish === false">
       <h2>좋아하는 장르가 뭔가요?</h2>
-      <v-btn v-for="genre of genres"
-        :key="genre.id"
-        @click="addLikeGenres(genre.id)"
-        style="margin: 0.1rem;"
-      >
-        {{ genre.name }}
-      </v-btn>
-      <v-btn color="accent" @click="saveGenreList">선택완료</v-btn>
+      <v-row justify="space-around">
+        <v-col
+          cols="12"
+          sm="10"
+          md="8"
+        >
+          <!-- <v-sheet
+            elevation="10"
+            class="py-4 px-1"
+          > -->
+            <v-chip-group
+              multiple
+              active-class="primary--text"
+            >
+              <v-chip
+                v-for="genre of genres"
+                :key="genre.id"
+                @click="addLikeGenres(genre.id)"
+              >
+                {{ genre.name }}
+              </v-chip>
+            </v-chip-group>
+          <!-- </v-sheet> -->
+        </v-col>
+        <v-btn color="accent" @click="saveGenreList">선택완료</v-btn>
+      </v-row>
+
+
+      
     </span>
   </span>
 </template>

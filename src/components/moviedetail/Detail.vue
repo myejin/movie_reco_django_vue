@@ -1,24 +1,27 @@
 <template>
-  <div class="mt-16">
-    <links></links>
-    <div class="center-position">
-      <img height="400px" :src="'https://image.tmdb.org/t/p/original/' + posterPath" :alt="title">
+  <div style="text-align:center;">
+      <div >
+        <img height="400px" :src="'https://image.tmdb.org/t/p/original/' + posterPath" :alt="title">
+      </div>
 
-      <div class="ms-16">
-        <h1>{{ title }}</h1>
+      <div>
+        <div class="title-style ">{{ title }}</div>
         <img width="80%" src="@/assets/detail_title.png" alt="">
       </div>
       <!-- 혜진추가 -->
-      <div>평점 : {{ rank }}</div>
+      <h4 class="my-4">내 평점:</h4>
+      <rate></rate>
+      <wish></wish>
+
+      <h2 class="my-4">총 평점 : {{ rank }}</h2>
       <div>
         <h3>장르</h3>
         <span v-for="genre of genres" :key="genre.id">{{ genre.name }}&nbsp;</span>
       </div>
-      <div>
+      <div style="margin: 50px 200px" >
         <h3>줄거리</h3>
         {{ overview }}
       </div>
-    </div>
     <!-- actor -->
     <div class="bg">
       <v-slide-group
@@ -51,13 +54,15 @@
 </template>
 
 <script>
-import Links from '@/components/moviedetail/Links'
+import Rate from '@/components/moviedetail/Rate'
+import Wish from '@/components/moviedetail/Wish'
 import axios from 'axios'
 
 export default {
   name:'Detail',
-  components: {
-    Links
+  components:{
+    Rate,
+    Wish
   },
   data: function () {
     return {
@@ -111,5 +116,11 @@ export default {
   word-break: normal; 
   overflow: hidden; 
   text-overflow: ellipsis;
+}
+
+.title-style {
+  font-size:50px; 
+  font-weight:800;
+  margin-top: 30px;
 }
 </style>
