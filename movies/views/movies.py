@@ -52,11 +52,15 @@ def rate(request, movie_pk):
 
         if request.method == "DELETE":
             movie_rank = get_object_or_404(MovieRank, user=request.user, movie=movie)
+            tmp = movie_rank.rank
             movie_rank.delete()
             data = {
-                "msg": f"{movie.title} 에 대한 리뷰가 삭제되었습니다.",
+                'status_code': 204,
+                'message': 'NO_CONTENT',
+                "rank_count": movie.rank_count - 1,
+                "rank_sum": movie.rank_sum - tmp,
             }
-            return Response(data, status=status.HTTP_204_NO_CONTENT)
+            return Response(data)
         else:
             if movie.rate_users.filter(pk=request.user.pk).exists():
                 movie_rank = get_object_or_404(MovieRank, user=request.user, movie=movie)
