@@ -18,6 +18,10 @@
         <h3>줄거리</h3>
         {{ overview }}
       </div>
+
+      <div>
+        <button @click="createArticle">영화메이트 구하기</button>
+      </div>
     </div>
     <!-- actor -->
     <div class="bg">
@@ -92,7 +96,37 @@ export default {
         this.rank = Math.round(res.data['rank_sum'] / res.data['rank_count'] * 10) / 10
         this.actors = res.data['actors']
       })
-    }
+    },
+    createArticle: function () {
+      const pos = this.getPosition()
+      if (pos !== 'err') {
+        axios({
+          method: 'post',
+          url: `${this.$defaultUrl}/articles/`,  
+          headers: this.setHeader(),
+          data: {
+            'movie_pk': this.$route.params.movieId,
+            'latitude': pos.latitude,
+            'longitude': pos.longitude
+          }
+        })
+        .then(() => {
+          alert('메이트 모집글이 등록되었어요.')
+          this.$router.push({name:'Community'})
+        })
+      }
+    },
+    getPosition: function () {
+      if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => position.coords, err => {
+          alert(`위치정보를 받아오는 데 에러가 발생합니다.\n${err}`)
+          return 'err'
+        })
+      } else {
+        alert('위치정보를 사용할 수 없습니다.')
+        return 'err'
+      }
+    },
   },
   created: function () {
     this.getMovie()
