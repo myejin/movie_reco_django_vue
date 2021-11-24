@@ -77,6 +77,7 @@ export default {
       genres: [],
       rank: 0,
       actors: [],
+      pos: {},
     }
   },
   methods: {
@@ -103,16 +104,15 @@ export default {
       })
     },
     createArticle: function () {
-      const pos = this.getPosition()
-      if (pos !== 'err') {
+      if (this.pos !== 'err') {
         axios({
           method: 'post',
           url: `${this.$defaultUrl}/articles/`,  
           headers: this.setHeader(),
           data: {
             'movie_pk': this.$route.params.movieId,
-            'latitude': pos.latitude,
-            'longitude': pos.longitude
+            'latitude': this.pos.latitude,
+            'longitude': this.pos.longitude
           }
         })
         .then(() => {
@@ -123,18 +123,19 @@ export default {
     },
     getPosition: function () {
       if('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(position => position.coords, err => {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.pos = position.coords
+        }, err => {
           alert(`위치정보를 받아오는 데 에러가 발생합니다.\n${err}`)
-          return 'err'
         })
       } else {
         alert('위치정보를 사용할 수 없습니다.')
-        return 'err'
       }
     },
   },
   created: function () {
     this.getMovie()
+    this.getPosition()
   }
 }
 </script>
