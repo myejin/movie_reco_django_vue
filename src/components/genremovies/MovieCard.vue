@@ -3,7 +3,6 @@
     <v-card
       class="mx-auto"
       max-width="344"
-      style="margin: 0.2rem;"
       @click="goDetail"
     >
       <v-img

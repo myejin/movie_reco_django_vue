@@ -2,18 +2,22 @@
   <div>
     <span class="bg"></span>
     <v-app id="inspire">
-      <!-- <v-container > -->
-      <p class="genre-font" style="margin: 1rem;">{{ genreName }}</p>
-      <div class="moviecards">
-        <movie-card
-          v-for="movie in genreMovies"
-          :key="movie.id"
-          :id="movie.id"
-          :title="movie.title"
-          :posterPath="movie.poster_path"
-        ></movie-card>
-      </div>
-      <!-- </v-container> -->
+      <v-container >
+        <p class="genre-font" style="margin: 1rem;">{{ genreName }}</p>
+        <div v-if="!genreMovies.length" style="margin: 3rem;">
+          <p>{{ genreName }} 영화는 아직 없어요.</p>
+        </div>
+        <div v-else class="moviecards">
+          <movie-card
+            v-for="movie in genreMovies"
+            :key="movie.id"
+            :id="movie.id"
+            :title="movie.title"
+            :posterPath="movie.poster_path"
+            style="margin: 0.3rem;"
+          ></movie-card>
+        </div>
+      </v-container>
     </v-app>
   </div>
 </template>
@@ -37,7 +41,7 @@ export default {
     LoadGenreMovies: function () {
       axios({
         method: 'get',
-        url: `${this.$defaultUrl}/genres/1/movies/`,
+        url: `${this.$defaultUrl}/genres/${this.$route.params.genreId}/movies/`,
       })
       .then(res => {
         console.log(res.data);
