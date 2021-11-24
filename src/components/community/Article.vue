@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="!article.is_finished || article.author.username === myName">
       <a @click="goProfile" class="a-align" style="width:20%; color: black;">{{ username }}</a>
       <a @click="goMovie" class="a-align" style="width:40%; color: black;">{{ movie.title }}</a>
       <a class="a-align" style="width:10%; color: black;"><span @click="showDetail">detail</span></a>
@@ -90,9 +90,6 @@ export default {
         method: 'put',
         url: `${this.$defaultUrl}/articles/${this.article['id']}/`,  
         headers: this.setHeader(),
-        // data: {
-        //   'is_finished': this.isFinish
-        // }
       })
       .then(() => {
         if (this.isFinish) {

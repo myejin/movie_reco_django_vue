@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import Article from '@/components/article/Article.vue'
+import Article from '@/components/community/Article.vue'
 import axios from 'axios'
 
 export default {
