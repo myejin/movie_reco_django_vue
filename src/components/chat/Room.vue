@@ -11,7 +11,7 @@
           >
           </message>
         </div>
-        <div class="d-flex">
+        <div class="d-flex" style="margin: 0.5rem 0;">
           <v-text-field
             label=""
             filled
@@ -145,7 +145,7 @@ export default {
 }
 .messages {
   background-color: white;
-  height: 450px;
+  height: 350px;
   padding: 1rem;
   overflow: scroll;
 }
