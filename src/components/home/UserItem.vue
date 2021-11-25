@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 1rem 0;">
     <h3>
-      <router-link :to="{name: 'Profile', params: { username: username }}">
+      <router-link class=" text-decoration-none font-style" :to="{name: 'Profile', params: { username: username }}">
         {{ username }}
       </router-link>
         님이 본 영화

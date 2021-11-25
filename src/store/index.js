@@ -58,7 +58,7 @@ export default new Vuex.Store({
         } else if (response1.data.weather[0].main === "Atmosphere") {
           genresN =  12
         } else if (response1.data.weather[0].main === "Clear") {
-          genresN =  3
+          genresN =  8
         } else if (response1.data.weather[0].main === "Clouds") {
           genresN =  15
         } 

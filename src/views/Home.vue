@@ -4,11 +4,10 @@
       <v-app id="inspire">
         <v-container >
           <v-row >
-          
-
+        
             <v-col  sm="0" lg="2">
               <div style="position:relative;">
-                <img class="img-size" src="../assets/rain.jpg" alt="">
+                <img class="img-size" :src="require(`../assets/${imgUrl}.jpg`)" alt="">
                 <weather></weather>
                 <weather-movie></weather-movie>
               </div>
@@ -50,8 +49,15 @@ export default {
   },
   computed: {
     ...mapState([
-      'profile',
-    ])
+      'profile' ,'seoulWeather'
+    ]),
+    imgUrl: function () {
+      if (this.seoulWeather.main ) {
+        return this.seoulWeather.main
+      } else {
+        return ''
+      } 
+    }
   },
   created: function () {
     this.$store.dispatch('LoadWeatherMovie')
@@ -68,11 +74,13 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 #inspire {
   background: none;
 }
 .img-size {
   width:1160px;
+  height: 750px;
   margin-top: 100px;
 }
 </style>

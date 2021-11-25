@@ -6,11 +6,11 @@
         <div class="m-2">
           <v-row>
             <h2 style="margin: 0.5rem">{{ username }}</h2>
-            <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
+            <v-sheet  style="margin: 0.5rem; text-align: center; background: none;">
               <p>팔로워</p>
               <p>{{ profile.followerCnt }}</p>
             </v-sheet>
-            <v-sheet color="white" style="margin: 0.5rem; text-align: center;">
+            <v-sheet style="margin: 0.5rem; text-align: center; background: none;">
               <p>팔로잉</p>
               <p>{{ profile.followingCnt }}</p>
             </v-sheet>
