@@ -1,6 +1,7 @@
 <template>
   <div class="my-3">
-    <v-btn @click="addWishList">{{ btnValue }}</v-btn>
+    <v-btn @click="addWishList" v-if="dataBtn.length">{{ dataBtn }}</v-btn>
+    <v-btn @click="addWishList" v-else>{{ btnValue }}</v-btn>
   </div>
 </template>
 
@@ -12,6 +13,11 @@ export default {
   name:'Wish',
   props: {
     title: String,
+  },
+  data: function () {
+    return {
+      dataBtn: '',
+    }
   },
   methods:{
     setHeader: function () {
@@ -38,12 +44,16 @@ export default {
         headers: this.setHeader()
       })
       .then(() => {
-        if (this.btnValue === 'addwish') {
+        if (!this.dataBtn.length) {
+          this.dataBtn = this.btnValue
+        }
+        if (this.dataBtn === 'addwish') {
+          this.dataBtn = 'nowish'
           alert('위시리스트에 추가되었어요.')
         } else {
+          this.dataBtn = 'addwish'
           alert('위시리스트에서 삭제되었어요.')
         }
-        this.$router.go()
       })
     }
   },
