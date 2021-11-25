@@ -33,7 +33,7 @@
                   :key="genre.id"
                   @click="addLikeGenres(genre.id)"
                 >
-                  <router-link :to="{name: 'GenreMovies', params: { genreId: genre.id }}">
+                  <router-link style="text-decoration:none" :to="{name: 'GenreMovies', params: { genreId: genre.id }}">
                   <span style="color: black;">{{ genre.name }}</span>
                   </router-link>
                 </v-chip>

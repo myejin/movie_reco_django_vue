@@ -5,7 +5,7 @@
         <v-container >
           <v-row >
         
-            <v-col  sm="0" lg="2">
+            <v-col  cols="auto">
               <div style="position:relative;">
                 <img class="img-size" :src="require(`../assets/${imgUrl}.jpg`)" alt="">
                 <weather></weather>
@@ -55,7 +55,7 @@ export default {
       if (this.seoulWeather.main ) {
         return this.seoulWeather.main
       } else {
-        return ''
+        return 'Clear'
       } 
     }
   },

@@ -28,7 +28,7 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             >
             </v-img>
-            <v-card-title v-card-title class="cardTitle  font-style">
+            <v-card-title  class="cardTitle  font-style">
               <v-spacer />
             <div class="cardTitlee">{{ movie.movie_detail.title }}</div>
               <v-spacer />
