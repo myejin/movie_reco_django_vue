@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="display:flex; justify-content:center; margin:0px 400px">
-      <h4 class="my-4">내 평점:</h4>
+      <h4 class="my-4 me-3">내 평점:</h4>
       <v-select
         style="width:20%"
         :items="items"

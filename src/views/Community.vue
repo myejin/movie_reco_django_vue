@@ -3,9 +3,9 @@
     <span class="bg"></span>
     <v-app id="inspire">
       <v-container>
-        <h2>영화 같이 볼까요?</h2>
-        <p>{{ myName }}님과 가까운 분의 모집글부터 노출됩니다.</p>
-        <div style="background: none;">
+        <div style="font-size:3rem; margin:2rem 0rem;">영화 같이 볼까요?</div>
+        <div>{{ myName }} 님과 가까운 분의 모집글부터 노출됩니다.</div>
+        <div style="background: none; margin:2rem 0rem;">
             <div style="border-bottom: thin solid; width:80%;">
               <span style="display:inline-block; width:25%; text-align: center;">username</span>
               <span style="display:inline-block; width:50%; text-align: center;">movie</span>

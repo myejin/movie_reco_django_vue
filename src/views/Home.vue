@@ -15,9 +15,10 @@
           
           </v-row>
           <br>
-          <search-movie></search-movie>
+          
           <br>
-          <div v-if="!profile.likeGenres.length">
+          <div v-if="!profile.likeGenres.length" style="text-align:center;">
+            
             <genre-choice></genre-choice>
           </div>
           <similar-user></similar-user>
@@ -34,7 +35,6 @@ import Weather from '../components/home/Weather.vue'
 import SimilarUser from '../components/home/SimilarUser.vue'
 import GenreChoice from '../components/home/GenreChoice.vue'
 import GenreMovieList from '../components/home/GenreMovieList.vue'
-import SearchMovie from '../components/home/SearchMovie.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -45,7 +45,7 @@ export default {
     SimilarUser,
     GenreChoice,
     GenreMovieList,
-    SearchMovie,
+    
   },
   computed: {
     ...mapState([
