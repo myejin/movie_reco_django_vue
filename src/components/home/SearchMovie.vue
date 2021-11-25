@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <h2>찾는 영화가 있으신가요?</h2>
+  <div style="display:flex; justify-content:center; margin-top:1rem;">
+    
     <v-text-field
-      label="정확한 영화 제목을 입력하세요."
+      style="width:13rem;"
+      label="영화 제목을 입력하세요."
       v-model.trim="inputData"
       @keyup.enter="search"
     ></v-text-field>
-    <v-btn @click="search">검색</v-btn>
+    <v-btn icon @click="search">
+        <v-icon>mdi-magnify</v-icon>
+    </v-btn>
   </div>
 </template>
 

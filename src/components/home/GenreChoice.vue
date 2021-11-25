@@ -1,11 +1,9 @@
 <template>
   <span v-if="finish === false">
-    <h2>좋아하는 장르가 뭔가요?</h2>
-    <v-row class="justify-center">
+    <h2 style="text-align:center; margin-bottom:2rem;">장르를 선택하세요.</h2>
+    <v-row>
       <v-col
-        cols="12"
-        sm="10"
-        md="8"
+        
       >
         <!-- <v-sheet
           elevation="10"
@@ -25,9 +23,10 @@
           </v-chip-group>
         <!-- </v-sheet> -->
       </v-col>
-    <span style="display:inline-block;"></span>
-    <v-btn color="grey" @click="saveGenreList" style="color: white;" class="align-self-center">선택완료</v-btn>
     </v-row>
+    <span style="display:inline-block;" >
+    <v-btn color="grey" @click="saveGenreList" style="color: white; " class="align-self-center ma-3" >저장</v-btn>
+    </span>
     
   </span>
 </template>
@@ -96,7 +95,7 @@ export default {
         alert('장르가 저장되었어요!')
         this.$router.go()
       })
-    }
+    },
   },
   computed: {
     ...mapState([

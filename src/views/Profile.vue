@@ -3,17 +3,20 @@
     <span class="bg"></span>
     <v-app id="inspire">
       <v-container >
-        <div class="m-2">
-          <v-row>
-            <h2 style="margin: 0.5rem">{{ username }}</h2>
-            <v-sheet  style="margin: 0.5rem; text-align: center; background: none;">
+        <div class="m-2" style="text-align: center;">
+            <div style="margin: 1rem; font-size:5rem;">{{ username }}</div>
+
+            <div style="display:flex; justify-content:center; font-weight:1000;">
+            <div style="margin: 0.5rem; text-align: center; background: none; ">
               <p>팔로워</p>
               <p>{{ profile.followerCnt }}</p>
-            </v-sheet>
-            <v-sheet style="margin: 0.5rem; text-align: center; background: none;">
+            </div>
+            <div style="margin: 0.5rem; text-align: center; background: none;">
               <p>팔로잉</p>
               <p>{{ profile.followingCnt }}</p>
-            </v-sheet>
+            </div>
+            </div>
+
             <v-btn 
               @click="followToggle" 
               v-if="!isMyProfile"
@@ -21,11 +24,11 @@
             >
               {{ followBtn }}
             </v-btn>
-          </v-row>
+          
         </div>
         <div class="m-2">
           <v-row no-gutters v-if="!show">
-            <v-col>
+            <v-col style="text-align:center;">
               <h3>좋아하는 장르</h3>
               <div v-if="profile.likeGenres.length">
                 <v-chip
@@ -38,13 +41,15 @@
                   </router-link>
                 </v-chip>
               </div>
-              <div v-else>특별히 없어요.</div>
+              <div v-else></div>
+              <v-col v-if="isMyProfile"><v-btn @click="genreToggle">선택</v-btn></v-col>
             </v-col>
-            <v-col v-if="isMyProfile"><v-btn @click="genreToggle">변경</v-btn></v-col>
           </v-row>
-          <div v-else>
+          <div v-else style="text-align:center;">
+            
             <genre-choice></genre-choice>
             <v-btn @click="genreToggle" color="grey" style="margin: 0.1rem; color: white;">취소</v-btn>
+
           </div>
         </div>
         <div class="m-2">
@@ -244,5 +249,6 @@ export default {
   word-break: normal; 
   overflow: hidden; 
   text-overflow: ellipsis;
+  
 }
 </style>
