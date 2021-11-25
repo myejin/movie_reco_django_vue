@@ -60,6 +60,9 @@ export default {
     }
   },
   created: function () {
+    if (!('jwt' in localStorage)) {
+      this.$router.push({ name: 'Login' })
+    }
     this.$store.dispatch('LoadWeatherMovie')
   },
 }
