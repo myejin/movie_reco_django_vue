@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "dev"  # config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # config("DEBUG", cast=bool)
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ["3.34.140.15", "127.0.0.1"]
+ALLOWED_HOSTS = [config("URL")]
 
 
 # Application definition
@@ -137,9 +137,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8080",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)
