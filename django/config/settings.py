@@ -26,7 +26,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = [config("URL")]
+ALLOWED_HOSTS = [config("URL"), config("DOMAIN_NAME")]
 
 
 # Application definition
@@ -137,11 +137,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:8080",
-# ]
-
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    config("FE_ADDR1"),
+    config("FE_ADDR2"),
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)
