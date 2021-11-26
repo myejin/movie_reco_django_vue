@@ -12,14 +12,16 @@
   <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vue.js&logoColor=white"/>
 </a>
 <br>
+
 * `axios: ^0.24.0`
-* ` core-js: ^3.6.5`
+* `core-js: ^3.6.5`
 * `lodash: ^4.17.21`
 * `vue: ^2.6.14`
 * `vue-carousel:^0.18.0`
 * `vue-router: ^3.2.0`
 * `vuetify: ^2.4.0`
 * `vuex: ^3.4.0`
+<br>
 
 <a href="https://www.djangoproject.com/">
   <img src="https://img.shields.io/badge/Django-558855?style=flat-square&logo=Django&logoColor=white"/></a>
