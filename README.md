@@ -38,6 +38,12 @@
 * `daphne==3.0.2`
 <br>
 
+### :mag: 외부 API
+- <a href="https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API">`Geolocation API`</a>
+- <a href="https://openweathermap.org/api">`Weather API`</a>
+- <a href="https://apis.map.kakao.com/">`Kakao 지도 API`</a>
+<br>
+
 ### 🗓 프로젝트 기간 
 
 * 2021.11.17 ~ 2021.11.26 (10일)
